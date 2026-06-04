@@ -686,7 +686,7 @@ export default function Home() {
             </div>
 
             {/* Bottom Area: Photo deck grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full z-20 max-h-[32vh] overflow-y-auto no-scrollbar mb-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full z-20 max-h-[32vh] overflow-y-auto no-scrollbar mb-16 md:mb-20">
               {PHOTO_POOL.map((photo, index) => {
                 const isUnlocked = unlockedPhotos.some((p) => p.id === photo.id);
                 return (
