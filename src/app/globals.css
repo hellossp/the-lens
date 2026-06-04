@@ -37,21 +37,54 @@ body {
 }
 
 @keyframes noise-anim {
-  0% { transform: translate(0, 0); }
-  10% { transform: translate(-1%, -1%); }
-  20% { transform: translate(-2%, 1%); }
-  30% { transform: translate(1%, -2%); }
-  40% { transform: translate(-1%, 3%); }
-  50% { transform: translate(-2%, 1%); }
-  60% { transform: translate(3%, -1%); }
-  70% { transform: translate(2%, 1%); }
-  80% { transform: translate(-3%, -2%); }
-  90% { transform: translate(1%, 2%); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-1%, -1%);
+  }
+
+  20% {
+    transform: translate(-2%, 1%);
+  }
+
+  30% {
+    transform: translate(1%, -2%);
+  }
+
+  40% {
+    transform: translate(-1%, 3%);
+  }
+
+  50% {
+    transform: translate(-2%, 1%);
+  }
+
+  60% {
+    transform: translate(3%, -1%);
+  }
+
+  70% {
+    transform: translate(2%, 1%);
+  }
+
+  80% {
+    transform: translate(-3%, -2%);
+  }
+
+  90% {
+    transform: translate(1%, 2%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Lenis Scroll Smoothness */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -71,6 +104,7 @@ html.lenis, html.lenis body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -82,4 +116,79 @@ html.lenis, html.lenis body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Machined Metal Bezel */
+.control-wheel-bezel {
+  background: repeating-conic-gradient(from 0deg,
+      #111113 0deg 2.5deg,
+      #2a2a2e 2.5deg 5deg);
+  box-shadow:
+    inset 0 0 15px rgba(0, 0, 0, 0.95),
+    0 8px 30px rgba(0, 0, 0, 0.8),
+    0 2px 2px rgba(255, 255, 255, 0.05);
+}
+
+/* Metallic Finish Wheel Body */
+.control-wheel-metal {
+  background: radial-gradient(circle at center,
+      #2a2a2e 0%,
+      #1e1e21 30%,
+      #121214 70%,
+      #0a0a0b 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.15),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.8),
+    0 10px 25px rgba(0, 0, 0, 0.9);
+}
+
+/* Conic sheen reflection sweep */
+.control-wheel-sheen {
+  background: conic-gradient(from calc(var(--sheen-rotation, 0) * 1deg),
+      transparent 0deg,
+      rgba(255, 255, 255, 0.07) 30deg,
+      transparent 60deg,
+      transparent 180deg,
+      rgba(255, 255, 255, 0.07) 210deg,
+      transparent 240deg,
+      transparent 360deg);
+}
+
+/* Autofocus Lock Ring */
+.control-wheel-focus-ring {
+  border: 1px solid rgba(16, 185, 129, 0);
+  /* starts invisible */
+  box-shadow: 0 0 0px rgba(16, 185, 129, 0);
+  transition: border-color 0.1s, box-shadow 0.1s;
+}
+
+.control-wheel-focus-ring.active {
+  border-color: rgba(16, 185, 129, 0.85);
+  box-shadow:
+    0 0 18px rgba(16, 185, 129, 0.6),
+    inset 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+/* Active Mode HUD Slider */
+.hud-number-strip {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Precision Viewfinder Targeting Line */
+.targeting-system-line {
+  height: 1px;
+  background: repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.25) 1px,
+      transparent 1px,
+      transparent 12px);
+}
+
+.targeting-system-ticks {
+  height: 6px;
+  background: repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.4) 1px,
+      transparent 1px,
+      transparent 6px);
 }

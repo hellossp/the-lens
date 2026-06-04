@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 import { Camera, Scroll } from "lucide-react";
 
 const STAGES = [
-  { id: "lens", label: "01. THE LENS" },
-  { id: "light", label: "02. THE LIGHT" },
-  { id: "focus", label: "03. THE FOCUS" },
-  { id: "services", label: "04. CAPABILITIES" },
-  { id: "memory", label: "05. CAPTURED MOMENTS" },
-  { id: "gallery", label: "06. SNAP GALLERY" },
-  { id: "legacy", label: "07. THE LEGACY" },
-  { id: "booking", label: "08. BOOK SESSION" },
+  { id: "lens", label: "THE LENS" },
+  { id: "light", label: "THE LIGHT" },
+  { id: "focus", label: "THE FOCUS" },
+  { id: "services", label: "CAPABILITIES" },
+  { id: "gallery", label: "SNAP GALLERY" },
+  { id: "legacy", label: "THE LEGACY" },
+  { id: "booking", label: "BOOK SESSION" },
 ];
 
 export default function Overlay() {
@@ -26,19 +25,17 @@ export default function Overlay() {
       setScrollProgress(progress);
 
       // Determine active stage based on progress
-      if (progress < 0.12) {
+      if (progress < 0.14) {
         setActiveStage("lens");
-      } else if (progress < 0.24) {
+      } else if (progress < 0.28) {
         setActiveStage("light");
-      } else if (progress < 0.38) {
+      } else if (progress < 0.44) {
         setActiveStage("focus");
-      } else if (progress < 0.54) {
+      } else if (progress < 0.62) {
         setActiveStage("services");
-      } else if (progress < 0.70) {
-        setActiveStage("memory");
-      } else if (progress < 0.84) {
+      } else if (progress < 0.80) {
         setActiveStage("gallery");
-      } else if (progress < 0.93) {
+      } else if (progress < 0.91) {
         setActiveStage("legacy");
       } else {
         setActiveStage("booking");
@@ -51,28 +48,25 @@ export default function Overlay() {
 
   // Compute dynamic stats based on scroll progress
   const getISO = () => {
-    if (scrollProgress < 0.12) return 100;
-    if (scrollProgress < 0.24) return 800; // Entering dark light scene
-    if (scrollProgress < 0.38) return 400;
-    if (scrollProgress < 0.54) return 100; // Capabilities dial
-    if (scrollProgress < 0.70) return 200; // Memory scene
+    if (scrollProgress < 0.14) return 100;
+    if (scrollProgress < 0.28) return 800; // Entering dark light scene
+    if (scrollProgress < 0.44) return 400;
+    if (scrollProgress < 0.62) return 100; // Capabilities dial
     return 100;
   };
 
   const getAperture = () => {
-    if (scrollProgress < 0.12) return "f/8.0";
-    if (scrollProgress < 0.24) return "f/1.2"; // Wide open for light rays
-    if (scrollProgress < 0.38) return "f/2.8"; // Internal elements depth
-    if (scrollProgress < 0.54) return "f/5.6"; // Capabilities dial
-    if (scrollProgress < 0.70) return "f/1.4"; // Portraits
-    if (scrollProgress < 0.84) return "f/4.0"; // Gallery
+    if (scrollProgress < 0.14) return "f/8.0";
+    if (scrollProgress < 0.28) return "f/1.2"; // Wide open for light rays
+    if (scrollProgress < 0.44) return "f/2.8"; // Internal elements depth
+    if (scrollProgress < 0.62) return "f/5.6"; // Capabilities dial
+    if (scrollProgress < 0.80) return "f/4.0"; // Gallery
     return "f/16"; // Closing down
   };
 
   const getShutter = () => {
-    if (scrollProgress < 0.38) return "1/250";
-    if (scrollProgress < 0.54) return "1/500";
-    if (scrollProgress < 0.70) return "1/1000"; // Freeze frame memories
+    if (scrollProgress < 0.44) return "1/250";
+    if (scrollProgress < 0.62) return "1/500";
     return "1/125";
   };
 
@@ -161,13 +155,12 @@ export default function Overlay() {
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 let targetProgress = 0;
                 if (stage.id === "lens") targetProgress = 0;
-                else if (stage.id === "light") targetProgress = 0.18;
-                else if (stage.id === "focus") targetProgress = 0.31;
-                else if (stage.id === "services") targetProgress = 0.46;
-                else if (stage.id === "memory") targetProgress = 0.62;
-                else if (stage.id === "gallery") targetProgress = 0.77;
-                else if (stage.id === "legacy") targetProgress = 0.88;
-                else if (stage.id === "booking") targetProgress = 0.98;
+                else if (stage.id === "light") targetProgress = 0.20;
+                else if (stage.id === "focus") targetProgress = 0.36;
+                else if (stage.id === "services") targetProgress = 0.53;
+                else if (stage.id === "gallery") targetProgress = 0.71;
+                else if (stage.id === "legacy") targetProgress = 0.85;
+                else if (stage.id === "booking") targetProgress = 0.96;
 
                 window.scrollTo({
                   top: targetProgress * docHeight,
@@ -216,4 +209,3 @@ export default function Overlay() {
     </div>
   );
 }
-

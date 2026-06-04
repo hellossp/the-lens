@@ -34,6 +34,10 @@ export default function Scene() {
   // Base rotation animated by GSAP, while useFrame adds idle sways & spin on top
   const baseRotation = useRef({ x: 0.25, y: -0.4, z: 0 });
 
+  // Local rotation of the dial driven by button clicks
+  const dialRotationY = useRef(0);
+  const targetIndexRef = useRef(0);
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth) - 0.5;
@@ -43,14 +47,39 @@ export default function Scene() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  // Listen to interactive dial-change events for button-driven 3D lens rotation
+  useEffect(() => {
+    const handleDialChange = (e: Event) => {
+      targetIndexRef.current = (e as CustomEvent).detail.index;
+    };
+    window.addEventListener("dial-change", handleDialChange);
+    return () => window.removeEventListener("dial-change", handleDialChange);
+  }, []);
+
   // Frame loop for idle rotations and mouse parallax
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
 
-    // 1. Apply base rotation + slow Z-spin + idle floating sways to the camera system
+    // Calculate scroll progress to determine whether we are inside Scene 4 (Capabilities)
+    let progress = 0;
+    if (typeof window !== "undefined") {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progress = docHeight > 0 ? window.scrollY / docHeight : 0;
+    }
+
+    // Target dial rotation matches the selected service idx when inside Capabilities (0.44 to 0.62)
+    // Outside this range, the dial rotation smoothly resets to 0 (e.g. for assembly/lock in Scene 5)
+    const targetRotation = (progress >= 0.44 && progress <= 0.62)
+      ? -targetIndexRef.current * (Math.PI * 0.5 / 7)
+      : 0;
+
+    // Smoothly interpolate the local dial rotation ref
+    dialRotationY.current = THREE.MathUtils.lerp(dialRotationY.current, targetRotation, 0.08);
+
+    // 1. Apply base rotation + slow Z-spin + dial rotation + idle floating sways to the camera system
     if (lensGroupRef.current) {
       lensGroupRef.current.rotation.x = baseRotation.current.x + Math.sin(time * 0.15) * 0.02;
-      lensGroupRef.current.rotation.y = baseRotation.current.y + Math.cos(time * 0.1) * 0.02;
+      lensGroupRef.current.rotation.y = baseRotation.current.y + dialRotationY.current + Math.cos(time * 0.1) * 0.02;
       lensGroupRef.current.rotation.z = baseRotation.current.z + time * 0.03;
     }
 
@@ -71,6 +100,21 @@ export default function Scene() {
       }
     }
   });
+
+  // Listen to interactive shutter click events for real-time mechanical 3D feedback
+  useEffect(() => {
+    const handleInteractiveShutter = () => {
+      if (apertureGroupRef.current) {
+        gsap.timeline()
+          .to(apertureGroupRef.current.rotation, { z: Math.PI / 1.5, duration: 0.15, ease: "power1.inOut" })
+          .to(apertureGroupRef.current.scale, { x: 0.15, y: 0.15, z: 0.15, duration: 0.15, ease: "power1.inOut" }, 0)
+          .to(apertureGroupRef.current.rotation, { z: 0, duration: 0.15, ease: "power1.inOut" })
+          .to(apertureGroupRef.current.scale, { x: 1.0, y: 1.0, z: 1.0, duration: 0.15, ease: "power1.inOut" }, ">");
+      }
+    };
+    window.addEventListener("camera-shutter", handleInteractiveShutter);
+    return () => window.removeEventListener("camera-shutter", handleInteractiveShutter);
+  }, []);
 
   // Orchestrate ScrollTrigger timeline
   useEffect(() => {
@@ -97,7 +141,50 @@ export default function Scene() {
     bodyRef.current.scale.set(0.001, 0.001, 0.001);
     bodyRef.current.position.set(0, -0.2, -2.36); // standard snapped position relative to lensGroupRef
 
-    // Master GSAP Timeline linked to scroll progress
+    // Local shutter sound synthesizer for dial snaps (throttled)
+    let lastClickTime = 0;
+    const playShutterSound = () => {
+      if (typeof window === "undefined") return;
+      const now = Date.now();
+      if (now - lastClickTime < 120) return;
+      lastClickTime = now;
+      try {
+        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const bufferSize = ctx.sampleRate * 0.08;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        
+        const noiseSource = ctx.createBufferSource();
+        noiseSource.buffer = buffer;
+        
+        const bandpass = ctx.createBiquadFilter();
+        bandpass.type = "bandpass";
+        bandpass.frequency.value = 1400;
+        bandpass.Q.value = 4;
+
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.35, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+        
+        noiseSource.connect(bandpass);
+        bandpass.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        noiseSource.start();
+      } catch (err) {
+        // silence errors
+      }
+    };
+
+    // Register custom 8-detents snap ease
+    gsap.registerEase("detent-8", (progress: number) => {
+      return progress - Math.sin(14 * Math.PI * progress) / (14 * Math.PI);
+    });
+
+    // Master GSAP Timeline linked to scroll progress (now scaled to 14.0s duration)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: "#scroll-container",
@@ -108,181 +195,164 @@ export default function Scene() {
     });
 
     // ----------------------------------------------------
-    // SCENE 1: THE LENS (Scroll: 0% -> 15%, Timeline 0 -> 1.5)
+    // SCENE 1: THE LENS (Scroll: 0% -> 12.8%, Timeline 0 -> 1.8)
     // Lens centered and tilted dynamically to show edges and metallic textures
     // ----------------------------------------------------
     tl.to(cameraRef.current.position, {
       z: 4.5, // keep camera at a nice distance to see full lens profile
       ease: "power1.inOut",
-      duration: 1.5,
+      duration: 1.8,
     }, 0);
 
     tl.to(baseRotation.current, {
       x: 0.15,
       y: 0.8, // rotate to show the detailed side textures
       z: 0.2,
-      duration: 1.5,
+      duration: 1.8,
       ease: "power2.inOut",
     }, 0);
 
     // HTML Text Scene 1
-    tl.to(".text-scene-1", { opacity: 1, y: 0, duration: 0.5 }, 0);
-    tl.to(".text-scene-1", { opacity: 0, y: -40, duration: 0.5 }, 1.0);
+    tl.set(".text-scene-1", { display: "flex" }, 0);
+    tl.to(".text-scene-1", { opacity: 1, y: 0, duration: 0.6 }, 0);
+    tl.to(".text-scene-1", { opacity: 0, y: -40, duration: 0.6 }, 1.2);
+    tl.set(".text-scene-1", { display: "none" }, 1.8);
 
     // ----------------------------------------------------
-    // SCENE 2: THE LIGHT (Scroll: 15% -> 30%, Timeline 1.5 -> 3.0)
+    // SCENE 2: THE LIGHT (Scroll: 12.8% -> 25.7%, Timeline 1.8 -> 3.6)
     // Lens travels to the left, and a volumetric beam shoots through it
     // ----------------------------------------------------
     tl.to(lensGroupRef.current.position, {
       x: -1.0,
       y: 0.1,
       z: 0.3,
-      duration: 1.5,
+      duration: 1.8,
       ease: "power2.inOut",
-    }, 1.5);
+    }, 1.8);
 
     tl.to(baseRotation.current, {
       x: 0.1,
       y: -0.6, // tilt to align the glass refraction in light direction
       z: 0.0,
-      duration: 1.5,
+      duration: 1.8,
       ease: "power2.inOut",
-    }, 1.5);
+    }, 1.8);
 
     // Fade in volumetric beam
     tl.to(beamMaterial.uniforms.uOpacity, {
       value: 0.85,
-      duration: 1.0,
+      duration: 1.2,
       ease: "power1.out",
-    }, 1.8);
+    }, 2.1);
 
     // Fade in dust particles
     tl.to(particlesMaterial, {
       opacity: 0.8,
-      duration: 1.2,
+      duration: 1.4,
       ease: "power1.out",
-    }, 1.8);
+    }, 2.1);
 
     // HTML Text Scene 2
-    tl.to(".text-scene-2", { opacity: 1, y: 0, duration: 0.5 }, 1.5);
-    tl.to(".text-scene-2", { opacity: 0, y: -40, duration: 0.5 }, 2.5);
+    tl.set(".text-scene-2", { display: "flex" }, 1.8);
+    tl.to(".text-scene-2", { opacity: 1, y: 0, duration: 0.6 }, 1.8);
+    tl.to(".text-scene-2", { opacity: 0, y: -40, duration: 0.6 }, 3.0);
+    tl.set(".text-scene-2", { display: "none" }, 3.6);
 
     // ----------------------------------------------------
-    // SCENE 3: THE FOCUS (Scroll: 30% -> 50%, Timeline 3.0 -> 5.0)
+    // SCENE 3: THE FOCUS (Scroll: 25.7% -> 41.4%, Timeline 3.6 -> 5.8)
     // Lens travels to the right, focus ring rotates, and glass elements separate
     // ----------------------------------------------------
     tl.to(lensGroupRef.current.position, {
       x: 1.1,
       y: -0.1,
       z: -0.4,
-      duration: 2.0,
+      duration: 2.2,
       ease: "power2.inOut",
-    }, 3.0);
+    }, 3.6);
 
     tl.to(baseRotation.current, {
       x: 0.3,
       y: 0.6, // opposite tilt to show separated layers in perspective
       z: -0.2,
-      duration: 2.0,
+      duration: 2.2,
       ease: "power2.inOut",
-    }, 3.0);
+    }, 3.6);
 
     // Move front glass forward
     tl.to(frontGlassRef.current.position, {
       z: 2.3,
-      duration: 2.0,
+      duration: 2.2,
       ease: "power2.inOut",
-    }, 3.0);
+    }, 3.6);
 
     // Move internal elements backward
     tl.to(midGlass1Ref.current.position, {
       z: 0.1,
-      duration: 2.0,
+      duration: 2.2,
       ease: "power2.inOut",
-    }, 3.0);
+    }, 3.6);
 
     tl.to(midGlass2Ref.current.position, {
       z: -1.0,
-      duration: 2.0,
+      duration: 2.2,
       ease: "power2.inOut",
-    }, 3.0);
+    }, 3.6);
 
     // Rotate focus ring
     tl.to(focusRingRef.current.rotation, {
       z: Math.PI * 1.8,
-      duration: 2.0,
+      duration: 2.2,
       ease: "power2.inOut",
-    }, 3.0);
+    }, 3.6);
 
     // Fade volumetric light slightly during focus transition
     tl.to(beamMaterial.uniforms.uOpacity, {
       value: 0.35,
-      duration: 1.0,
-    }, 3.0);
+      duration: 1.2,
+    }, 3.6);
 
     // HTML Text Scene 3
-    tl.to(".text-scene-3", { opacity: 1, y: 0, duration: 0.6 }, 3.0);
-    tl.to(".text-scene-3", { opacity: 0, y: -40, duration: 0.6 }, 4.4);
+    tl.set(".text-scene-3", { display: "flex" }, 3.6);
+    tl.to(".text-scene-3", { opacity: 1, y: 0, duration: 0.7 }, 3.6);
+    tl.to(".text-scene-3", { opacity: 0, y: -40, duration: 0.7 }, 5.1);
+    tl.set(".text-scene-3", { display: "none" }, 5.8);
 
     // ----------------------------------------------------
-    // SCENE 4: THE MEMORY / SHUTTER snaps (Scroll: 50% -> 70%, Timeline 5.0 -> 7.0)
-    // Lens reassembles at center, aperture blades close and open rapidly (camera snaps)
+    // SCENE 4: CAPABILITIES / SERVICES (Scroll: 41.4% -> 61.4%, Timeline 5.8 -> 8.6)
+    // Lens reassembles in center, and spins in sync with dial rotation
     // ----------------------------------------------------
     tl.to(lensGroupRef.current.position, {
       x: 0.0,
       y: 0.0,
       z: 0.0,
-      duration: 1.5,
+      duration: 1.2,
       ease: "power2.inOut",
-    }, 5.0);
-
-    tl.to(baseRotation.current, {
-      x: 0.0,
-      y: 0.0,
-      z: 0.0,
-      duration: 1.5,
-      ease: "power2.inOut",
-    }, 5.0);
+    }, 5.8);
 
     // Reassemble glass elements
-    tl.to(frontGlassRef.current.position, { z: 1.5, duration: 1.2, ease: "power2.inOut" }, 5.0);
-    tl.to(midGlass1Ref.current.position, { z: 0.7, duration: 1.2, ease: "power2.inOut" }, 5.0);
-    tl.to(midGlass2Ref.current.position, { z: -0.3, duration: 1.2, ease: "power2.inOut" }, 5.0);
-    tl.to(focusRingRef.current.rotation, { z: 0, duration: 1.2, ease: "power2.inOut" }, 5.0);
+    tl.to(frontGlassRef.current.position, { z: 1.5, duration: 1.2, ease: "power2.inOut" }, 5.8);
+    tl.to(midGlass1Ref.current.position, { z: 0.7, duration: 1.2, ease: "power2.inOut" }, 5.8);
+    tl.to(midGlass2Ref.current.position, { z: -0.3, duration: 1.2, ease: "power2.inOut" }, 5.8);
+    tl.to(focusRingRef.current.rotation, { z: 0, duration: 1.2, ease: "power2.inOut" }, 5.8);
 
-    // Dynamic focus breathe + aperture snap (rapid close & reopen)
-    tl.to(apertureGroupRef.current.rotation, {
-      z: Math.PI / 1.5,
-      duration: 0.6,
-      ease: "power1.inOut",
-    }, 5.8);
-    tl.to(apertureGroupRef.current.scale, {
-      x: 0.15,
-      y: 0.15,
-      z: 0.15,
-      duration: 0.6,
-      ease: "power1.inOut",
+    // Dynamic rotation of 3D lens Y-axis in sync with the dial rotation
+    // We orient it to a static starting position (-Math.PI * 0.8) during Scene 4
+    tl.to(baseRotation.current, {
+      x: 0.05,
+      y: -Math.PI * 0.8,
+      z: 0.0,
+      duration: 1.2,
+      ease: "power2.inOut",
     }, 5.8);
 
-    tl.to(apertureGroupRef.current.rotation, {
-      z: 0,
-      duration: 0.6,
-      ease: "power1.inOut",
-    }, 6.4);
-    tl.to(apertureGroupRef.current.scale, {
-      x: 1.0,
-      y: 1.0,
-      z: 1.0,
-      duration: 0.6,
-      ease: "power1.inOut",
-    }, 6.4);
-
-    // HTML Text Scene 4
-    tl.to(".text-scene-4", { opacity: 1, y: 0, duration: 0.5 }, 5.0);
-    tl.to(".text-scene-4", { opacity: 0, y: -40, duration: 0.5 }, 6.5);
+    // HTML Text Capabilities Container Fade In/Out
+    tl.set(".text-scene-services", { display: "flex" }, 5.8);
+    tl.to(".text-scene-services", { opacity: 1, y: 0, duration: 0.6 }, 5.8);
+    tl.to(".text-scene-services", { opacity: 0, y: -40, duration: 0.4 }, 8.6);
+    tl.set(".text-scene-services", { display: "none" }, 9.0);
 
     // ----------------------------------------------------
-    // SCENE 5: THE GALLERY CAMERA ASSEMBLY (Scroll: 70% -> 85%, Timeline 7.0 -> 9.5)
+    // SCENE 5: THE GALLERY CAMERA ASSEMBLY (Scroll: 61.4% -> 78.6%, Timeline 8.6 -> 11.0)
     // Camera body scales up in center, lens slides forward, rotates and snaps back to lock!
     // ----------------------------------------------------
     // Scale camera body up and make it visible
@@ -292,88 +362,92 @@ export default function Scene() {
       z: 1.0,
       duration: 1.5,
       ease: "back.out(1.1)",
-    }, 7.0);
+    }, 8.6);
 
     // Push lens forward and rotate to twist-lock insertion angle
     tl.to(lensModelRef.current.position, {
       z: 1.8,
       duration: 0.8,
       ease: "power1.out",
-    }, 7.0);
+    }, 8.6);
     tl.to(lensModelRef.current.rotation, {
       z: -0.8, // rotation angle for bayonet insertion
       duration: 0.8,
       ease: "power1.out",
-    }, 7.0);
+    }, 8.6);
 
     // SNAP! Slide lens back onto mount and twist to lock
     tl.to(lensModelRef.current.position, {
       z: 0.0,
       duration: 1.0,
       ease: "back.inOut(1.2)",
-    }, 7.8);
+    }, 9.4);
     tl.to(lensModelRef.current.rotation, {
       z: 0.0, // twist lock back to straight
       duration: 1.0,
       ease: "back.inOut(1.2)",
-    }, 7.8);
+    }, 9.4);
 
     // Zoom camera slightly closer to see the final snap details
     tl.to(cameraRef.current.position, {
       z: 4.8,
       duration: 1.5,
       ease: "power2.inOut",
-    }, 7.0);
+    }, 8.6);
 
     // Tilt camera towards user for a majestic assembled view
     tl.to(baseRotation.current, {
       x: 0.2,
       y: -0.4,
-      duration: 1.5,
+      duration: 1.2,
       ease: "power2.inOut",
-    }, 8.0);
+    }, 9.6);
 
     // Fade out light beams & dust
-    tl.to(beamMaterial.uniforms.uOpacity, { value: 0.0, duration: 1.0 }, 7.0);
-    tl.to(particlesMaterial, { opacity: 0.0, duration: 1.0 }, 7.0);
+    tl.to(beamMaterial.uniforms.uOpacity, { value: 0.0, duration: 1.0 }, 8.6);
+    tl.to(particlesMaterial, { opacity: 0.0, duration: 1.0 }, 8.6);
 
     // HTML Text Scene 5
-    tl.to(".text-scene-5", { opacity: 1, y: 0, pointerEvents: "auto", duration: 0.5 }, 7.0);
-    tl.to(".text-scene-5", { opacity: 0, y: -40, pointerEvents: "none", duration: 0.5 }, 9.5);
+    tl.set(".text-scene-5", { display: "flex" }, 8.6);
+    tl.to(".text-scene-5", { opacity: 1, y: 0, duration: 0.5 }, 8.6);
+    tl.to(".text-scene-5", { opacity: 0, y: -40, duration: 0.5 }, 10.4);
+    tl.set(".text-scene-5", { display: "none" }, 11.0);
 
     // ----------------------------------------------------
-    // SCENE 6: THE LEGACY (Scroll: 85% -> 93%, Timeline 9.5 -> 11.5)
-    // Assembled Camera drifts to bottom-left, leaving space for HTML legacy photo on right
+    // SCENE 6: THE LEGACY (Scroll: 78.6% -> 90.0%, Timeline 11.0 -> 12.6)
+    // Assembled Camera drifts to bottom-left with ultra-smooth easing (sine.inOut)
     // ----------------------------------------------------
     tl.to(lensGroupRef.current.position, {
       x: -1.3,
       y: -0.6,
       z: -1.2,
-      duration: 1.5,
-      ease: "power2.inOut",
-    }, 9.5);
+      duration: 1.6,
+      ease: "sine.inOut", // Ultra-smooth drift easing
+    }, 11.0);
 
     tl.to(baseRotation.current, {
       x: 0.15,
       y: -0.2,
       z: 0.0,
-      duration: 1.5,
-      ease: "power2.inOut",
-    }, 9.5);
+      duration: 1.6,
+      ease: "sine.inOut",
+    }, 11.0);
 
     // Zoom camera slightly closer
     tl.to(cameraRef.current.position, {
       z: 3.5,
-      duration: 1.5,
-      ease: "power2.inOut",
-    }, 9.5);
+      duration: 1.6,
+      ease: "sine.inOut",
+    }, 11.0);
 
     // HTML Text Scene 6
-    tl.to(".text-scene-6", { opacity: 1, y: 0, duration: 0.5 }, 9.5);
-    tl.to(".text-scene-6", { opacity: 0, y: -40, duration: 0.5 }, 11.0);
+    tl.set(".text-scene-6", { display: "flex" }, 11.0);
+    tl.to(".text-scene-6", { opacity: 1, y: 0, duration: 0.5 }, 11.0);
+    tl.to(".text-scene-6", { opacity: 0, y: -40, duration: 0.5 }, 12.2);
+    tl.set(".text-scene-6", { display: "none" }, 12.7);
 
     // ----------------------------------------------------
-    // SCENE 7: CTA / BOOKING (Scroll: 93% -> 100%, Timeline 11.5 -> 13.0)
+    // SCENE 7: CTA / BOOKING (Scroll: 90.0% -> 100%, Timeline 12.6 -> 14.0)
     // Camera returns to center and closes aperture (shutter close outro)
     // ----------------------------------------------------
     // Return camera system to center
@@ -381,39 +455,39 @@ export default function Scene() {
       x: 0.0,
       y: 0.0,
       z: 0.0,
-      duration: 1.5,
+      duration: 1.2,
       ease: "power2.inOut",
-    }, 11.5);
+    }, 12.6);
 
     tl.to(baseRotation.current, {
       x: 0.0,
       y: 0.0,
       z: 0.0,
-      duration: 1.5,
+      duration: 1.2,
       ease: "power2.inOut",
-    }, 11.5);
+    }, 12.6);
 
     // Pull camera back
     tl.to(cameraRef.current.position, {
       z: 5.0,
-      duration: 1.5,
+      duration: 1.2,
       ease: "power2.inOut",
-    }, 11.5);
+    }, 12.6);
 
     // Close aperture blades (rotate + scale group down)
     tl.to(apertureGroupRef.current.rotation, {
       z: Math.PI / 1.5,
-      duration: 1.2,
+      duration: 1.0,
       ease: "power2.inOut",
-    }, 11.8);
+    }, 12.8);
 
     tl.to(apertureGroupRef.current.scale, {
       x: 0.15,
       y: 0.15,
       z: 0.15,
-      duration: 1.2,
+      duration: 1.0,
       ease: "power2.inOut",
-    }, 11.8);
+    }, 12.8);
 
     // Fade camera out to pure blackness at the very end
     tl.to(lensGroupRef.current.scale, {
@@ -422,10 +496,11 @@ export default function Scene() {
       z: 0.0,
       duration: 0.8,
       ease: "power2.in",
-    }, 12.4);
+    }, 13.0);
 
     // HTML Text Scene 7 (Booking Form fade in)
-    tl.to(".text-scene-7", { opacity: 1, y: 0, pointerEvents: "auto", duration: 0.8 }, 11.5);
+    tl.set(".text-scene-7", { display: "flex" }, 12.6);
+    tl.to(".text-scene-7", { opacity: 1, y: 0, duration: 0.8 }, 12.6);
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -507,4 +582,3 @@ export default function Scene() {
     </>
   );
 }
-
