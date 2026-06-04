@@ -692,7 +692,7 @@ export default function Home() {
                 return (
                   <div
                     key={photo.id}
-                    className={`relative aspect-[3/4] rounded-lg overflow-hidden border transition-all duration-500 ${isUnlocked
+                    className={`relative aspect-[4/3] rounded-lg overflow-hidden border transition-all duration-500 ${isUnlocked
                         ? "border-white/10 bg-zinc-950/40 hover:border-gold-500/80 shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
                         : "border-dashed border-white/10 bg-black/40 flex flex-col items-center justify-center"
                       }`}
