@@ -25,9 +25,11 @@ export default function Scene() {
   const midGlass2Ref = useRef<THREE.Mesh>(null);
   const focusRingRef = useRef<THREE.Group>(null);
   const apertureGroupRef = useRef<THREE.Group>(null);
+  const flareRef = useRef<THREE.Mesh>(null);
 
   const lightBeamRef = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
+  const pointLightRef = useRef<THREE.PointLight>(null);
 
   // Mouse coordinates for gentle parallax effect
   const mouse = useRef({ x: 0, y: 0 });
@@ -85,9 +87,9 @@ export default function Scene() {
       responsiveWrapperRef.current.position.y = yOffset;
     }
 
-    // Target dial rotation matches the selected service idx when inside Capabilities (0.44 to 0.62)
+    // Target dial rotation matches the selected service idx when inside Capabilities (0.44 to 0.58)
     // Outside this range, the dial rotation smoothly resets to 0 (e.g. for assembly/lock in Scene 5)
-    const targetRotation = (progress >= 0.44 && progress <= 0.62)
+    const targetRotation = (progress >= 0.44 && progress <= 0.58)
       ? -targetIndexRef.current * (Math.PI * 0.5 / 7)
       : 0;
 
@@ -155,9 +157,14 @@ export default function Scene() {
     const beamMaterial = lightBeamRef.current.material as THREE.ShaderMaterial;
     const particlesMaterial = particlesRef.current.material as THREE.PointsMaterial;
 
+    // Scale lens model down to 0.48 for realistic camera-to-lens proportions
+    if (lensModelRef.current) {
+      lensModelRef.current.scale.setScalar(0.48);
+    }
+
     // Reset Camera Body state
     bodyRef.current.scale.set(0.001, 0.001, 0.001);
-    bodyRef.current.position.set(0, -0.2, -2.36); // standard snapped position relative to lensGroupRef
+    bodyRef.current.position.set(0, 0.15, -1.76); // standard snapped position aligned to lens mount
 
     // Register custom 8-detents snap ease
     gsap.registerEase("detent-8", (progress: number) => {
@@ -220,14 +227,14 @@ export default function Scene() {
 
     // Fade in volumetric beam
     tl.to(beamMaterial.uniforms.uOpacity, {
-      value: 0.85,
+      value: 0.45,
       duration: 1.2,
       ease: "power1.out",
-    }, 2.1);
+    }, 1.6);
 
     // Fade in dust particles
     tl.to(particlesMaterial, {
-      opacity: 0.8,
+      opacity: 0.45,
       duration: 1.4,
       ease: "power1.out",
     }, 2.1);
@@ -253,10 +260,52 @@ export default function Scene() {
     tl.to(baseRotation.current, {
       x: 0.3,
       y: 0.6, // opposite tilt to show separated layers in perspective
-      z: -0.2,
       duration: 2.2,
       ease: "power2.inOut",
     }, 3.6);
+
+    tl.to(baseRotation.current, {
+      z: 0.15,
+      duration: 2.2,
+      ease: "power1.inOut",
+    }, 3.6);
+
+    // Move flare forward to match the front glass position z
+    tl.to(flareRef.current.position, {
+      z: 1.104,
+      duration: 2.2,
+      ease: "power2.inOut",
+    }, 3.6);
+
+    // Fade in LOCKED HUD text at 5.4s
+    tl.to(".hud-locked-text", {
+      opacity: 1,
+      duration: 0.3,
+      ease: "power1.out",
+    }, 5.4);
+    tl.to(".hud-locked-text", {
+      opacity: 0,
+      duration: 0.15,
+      ease: "power1.in",
+    }, 5.8);
+
+    // Gold lens flare flash at 5.6s
+    tl.to(flareRef.current.material, {
+      opacity: 0.7,
+      duration: 0.15,
+      ease: "power1.out",
+    }, 5.6);
+    tl.to(flareRef.current.material, {
+      opacity: 0,
+      duration: 0.15,
+      ease: "power1.in",
+      onComplete: () => {
+        // Just make sure it ends up transparent
+        if (flareRef.current) {
+          (flareRef.current.material as THREE.Material).opacity = 0;
+        }
+      }
+    }, 5.75);
 
     // Move front glass forward
     tl.to(frontGlassRef.current.position, {
@@ -285,11 +334,26 @@ export default function Scene() {
       ease: "power2.inOut",
     }, 3.6);
 
-    // Fade volumetric light slightly during focus transition
+    // Fade out volumetric light, point light, and dust particles completely during focus transition
     tl.to(beamMaterial.uniforms.uOpacity, {
-      value: 0.35,
+      value: 0.0,
       duration: 1.2,
+      ease: "power2.inOut",
     }, 3.6);
+
+    tl.to(particlesMaterial, {
+      opacity: 0.0,
+      duration: 1.2,
+      ease: "power2.inOut",
+    }, 3.6);
+
+    if (pointLightRef.current) {
+      tl.to(pointLightRef.current, {
+        intensity: 0.0,
+        duration: 1.2,
+        ease: "power2.inOut",
+      }, 3.6);
+    }
 
     // HTML Text Scene 3
     tl.set(".text-scene-3", { display: "flex" }, 3.6);
@@ -301,60 +365,61 @@ export default function Scene() {
     // SCENE 4: CAPABILITIES / SERVICES (Scroll: 41.4% -> 61.4%, Timeline 5.8 -> 8.6)
     // Lens reassembles, camera body scales up and locks in, rotates in sync with mode dial
     // ----------------------------------------------------
+    // Smooth, slow, and synchronized assembly reveal over 1.8 seconds (5.2s -> 7.0s)
     tl.to(lensGroupRef.current.position, {
       x: 0.0,
       y: 0.0,
       z: 0.0,
-      duration: 1.2,
+      duration: 1.8,
       ease: "power2.inOut",
-    }, 5.8);
+    }, 5.2);
 
     // Reassemble glass elements inside lens
-    tl.to(frontGlassRef.current.position, { z: 1.5, duration: 1.2, ease: "power2.inOut" }, 5.8);
-    tl.to(midGlass1Ref.current.position, { z: 0.7, duration: 1.2, ease: "power2.inOut" }, 5.8);
-    tl.to(midGlass2Ref.current.position, { z: -0.3, duration: 1.2, ease: "power2.inOut" }, 5.8);
-    tl.to(focusRingRef.current.rotation, { z: 0, duration: 1.2, ease: "power2.inOut" }, 5.8);
+    tl.to(frontGlassRef.current.position, { z: 1.5, duration: 1.8, ease: "power2.inOut" }, 5.2);
+    tl.to(midGlass1Ref.current.position, { z: 0.7, duration: 1.8, ease: "power2.inOut" }, 5.2);
+    tl.to(midGlass2Ref.current.position, { z: -0.3, duration: 1.8, ease: "power2.inOut" }, 5.2);
+    tl.to(focusRingRef.current.rotation, { z: 0, duration: 1.8, ease: "power2.inOut" }, 5.2);
 
     // CAMERA ASSEMBLY ANIMATION (Moved up to Scene 4)
-    // Scale camera body up and make it visible
+    // Scale camera body up smoothly without sudden bounce
     tl.to(bodyRef.current.scale, {
-      x: 1.0,
-      y: 1.0,
-      z: 1.0,
-      duration: 1.2,
-      ease: "back.out(1.1)",
-    }, 5.8);
+      x: 1.50,
+      y: 1.50,
+      z: 1.50,
+      duration: 1.8,
+      ease: "power2.out",
+    }, 5.2);
 
     // Push lens forward and rotate to twist-lock insertion angle
     tl.to(lensModelRef.current.position, {
       z: 1.8,
-      duration: 0.6,
+      duration: 0.9,
       ease: "power1.out",
-    }, 5.8);
+    }, 5.2);
     tl.to(lensModelRef.current.rotation, {
       z: -0.8, // rotation angle for bayonet insertion
-      duration: 0.6,
+      duration: 0.9,
       ease: "power1.out",
-    }, 5.8);
+    }, 5.2);
 
     // SNAP! Slide lens back onto mount and twist to lock
     tl.to(lensModelRef.current.position, {
       z: 0.0,
-      duration: 0.6,
-      ease: "back.inOut(1.2)",
-    }, 6.4);
+      duration: 0.9,
+      ease: "power2.inOut",
+    }, 6.1);
     tl.to(lensModelRef.current.rotation, {
       z: 0.0, // twist lock back to straight
-      duration: 0.6,
-      ease: "back.inOut(1.2)",
-    }, 6.4);
-
-    // Zoom camera to see the assembled body & dial console
-    tl.to(cameraRef.current.position, {
-      z: 4.8,
-      duration: 1.2,
+      duration: 0.9,
       ease: "power2.inOut",
-    }, 5.8);
+    }, 6.1);
+
+    // Zoom camera to see the assembled body & dial console (zoomed out for better visibility)
+    tl.to(cameraRef.current.position, {
+      z: 10.5,
+      duration: 1.8,
+      ease: "power2.inOut",
+    }, 5.2);
 
     // Dynamic rotation of 3D lens Y-axis in sync with dial rotation
     // Orient to a static starting position (-Math.PI * 0.8) during Scene 4
@@ -362,30 +427,42 @@ export default function Scene() {
       x: 0.05,
       y: -Math.PI * 0.8,
       z: 0.0,
-      duration: 1.2,
+      duration: 1.8,
       ease: "power2.inOut",
-    }, 5.8);
+    }, 5.2);
 
-    // Fade out light beams & dust as camera finishes assembly
-    tl.to(beamMaterial.uniforms.uOpacity, { value: 0.0, duration: 1.0 }, 5.8);
-    tl.to(particlesMaterial, { opacity: 0.0, duration: 1.0 }, 5.8);
+    // Ensure light beams & dust are completely faded out by the time assembly starts
+    tl.to(beamMaterial.uniforms.uOpacity, { value: 0.0, duration: 0.4 }, 4.8);
+    tl.to(particlesMaterial, { opacity: 0.0, duration: 0.4 }, 4.8);
+    if (pointLightRef.current) {
+      tl.to(pointLightRef.current, { intensity: 0.0, duration: 0.4 }, 4.8);
+    }
 
-    // HTML Text Capabilities Container Fade In/Out
-    tl.set(".text-scene-services", { display: "flex" }, 5.8);
-    tl.to(".text-scene-services", { opacity: 1, y: 0, duration: 0.6 }, 5.8);
-    tl.to(".text-scene-services", { opacity: 0, y: -40, duration: 0.4 }, 8.6);
-    tl.set(".text-scene-services", { display: "none" }, 9.0);
+    // HTML Text Capabilities Container Fade In/Out (synced with completion of assembly)
+    tl.set(".text-scene-services", { display: "flex" }, 6.0);
+    tl.to(".text-scene-services", { opacity: 1, y: 0, duration: 0.8 }, 6.0);
+    tl.to(".text-scene-services", { opacity: 0, y: -40, duration: 0.4 }, 7.6);
+    tl.set(".text-scene-services", { display: "none" }, 8.0);
 
     // ----------------------------------------------------
-    // SCENE 5: THE GALLERY CAMERA SNAP (Scroll: 61.4% -> 78.6%, Timeline 8.6 -> 11.0)
+    // SCENE 4.5: THE MAKER (Scroll: 58.0% -> 66.0%, Timeline 8.0 -> 9.2)
+    // Camera is assembled and remains static while Maker text fades in and out
+    // ----------------------------------------------------
+    tl.set(".text-scene-maker", { display: "flex" }, 8.0);
+    tl.to(".text-scene-maker", { opacity: 1, y: 0, duration: 0.5 }, 8.0);
+    tl.to(".text-scene-maker", { opacity: 0, y: -40, duration: 0.5 }, 8.7);
+    tl.set(".text-scene-maker", { display: "none" }, 9.2);
+
+    // ----------------------------------------------------
+    // SCENE 5: THE GALLERY CAMERA SNAP (Scroll: 66.0% -> 80.0%, Timeline 9.2 -> 11.2)
     // Assembled camera faces the viewer to take portraits/photos
     // ----------------------------------------------------
-    // Zoom camera slightly closer for interactive snap view
+    // Zoom camera slightly closer for interactive snap view (adjusted for better visibility)
     tl.to(cameraRef.current.position, {
-      z: 4.4,
+      z: 5.8,
       duration: 1.2,
       ease: "power2.inOut",
-    }, 8.6);
+    }, 9.2);
 
     // Tilt camera towards user for direct snap view
     tl.to(baseRotation.current, {
@@ -394,57 +471,57 @@ export default function Scene() {
       z: 0.0,
       duration: 1.5,
       ease: "power2.inOut",
-    }, 8.6);
+    }, 9.2);
 
     // HTML Text Scene 5
-    tl.set(".text-scene-5", { display: "flex" }, 8.6);
-    tl.to(".text-scene-5", { opacity: 1, y: 0, duration: 0.5 }, 8.6);
-    tl.to(".text-scene-5", { opacity: 0, y: -40, duration: 0.5 }, 10.4);
-    tl.set(".text-scene-5", { display: "none" }, 11.0);
+    tl.set(".text-scene-5", { display: "flex" }, 9.2);
+    tl.to(".text-scene-5", { opacity: 1, y: 0, duration: 0.5 }, 9.2);
+    tl.to(".text-scene-5", { opacity: 0, y: -40, duration: 0.5 }, 10.7);
+    tl.set(".text-scene-5", { display: "none" }, 11.2);
 
     // ----------------------------------------------------
-    // SCENE 6: THE LEGACY (Scroll: 78.6% -> 90.0%, Timeline 11.0 -> 12.6)
+    // SCENE 6: THE LEGACY (Scroll: 80.0% -> 91.0%, Timeline 11.2 -> 12.6)
     // Assembled Camera drifts to bottom-left with ultra-smooth easing
     // ----------------------------------------------------
     tl.to(lensGroupRef.current.position, {
       x: -1.2,
       y: -0.5,
       z: -1.0,
-      duration: 1.6,
+      duration: 1.4,
       ease: "sine.inOut",
-    }, 11.0);
+    }, 11.2);
 
     tl.to(baseRotation.current, {
       x: 0.15,
       y: -0.2,
       z: 0.0,
-      duration: 1.6,
+      duration: 1.4,
       ease: "sine.inOut",
-    }, 11.0);
+    }, 11.2);
 
-    // Zoom camera slightly closer
+    // Zoom camera slightly closer (adjusted for better visibility)
     tl.to(cameraRef.current.position, {
-      z: 3.8,
-      duration: 1.6,
+      z: 6.0,
+      duration: 1.4,
       ease: "sine.inOut",
-    }, 11.0);
+    }, 11.2);
 
     // HTML Text Scene 6
-    tl.set(".text-scene-6", { display: "flex" }, 11.0);
-    tl.to(".text-scene-6", { opacity: 1, y: 0, duration: 0.5 }, 11.0);
-    tl.to(".text-scene-6", { opacity: 0, y: -40, duration: 0.5 }, 12.2);
-    tl.set(".text-scene-6", { display: "none" }, 12.7);
+    tl.set(".text-scene-6", { display: "flex" }, 11.2);
+    tl.to(".text-scene-6", { opacity: 1, y: 0, duration: 0.5 }, 11.2);
+    tl.to(".text-scene-6", { opacity: 0, y: -40, duration: 0.5 }, 12.1);
+    tl.set(".text-scene-6", { display: "none" }, 12.6);
 
     // ----------------------------------------------------
-    // SCENE 7: CTA / BOOKING (Scroll: 90.0% -> 100%, Timeline 12.6 -> 14.0)
+    // SCENE 7: CTA / BOOKING (Scroll: 91.0% -> 100%, Timeline 12.6 -> 14.0)
     // Camera returns to center-back and closes aperture (camera stays in background)
     // ----------------------------------------------------
-    // Return camera system to center-back
+    // Return camera system to center-back and slide deep into the distance
     tl.to(lensGroupRef.current.position, {
       x: 0.0,
       y: 0.1,
-      z: -1.2,
-      duration: 1.2,
+      z: -10.0, // Retreat deep into the dark background
+      duration: 1.4,
       ease: "power2.inOut",
     }, 12.6);
 
@@ -458,12 +535,12 @@ export default function Scene() {
 
     // Pull camera back
     tl.to(cameraRef.current.position, {
-      z: 5.2,
+      z: 6.8,
       duration: 1.2,
       ease: "power2.inOut",
     }, 12.6);
 
-    // Close aperture blades (rotate + scale group down)
+    // Close aperture blades completely (rotate + scale to 0.0)
     tl.to(apertureGroupRef.current.rotation, {
       z: Math.PI / 1.5,
       duration: 1.0,
@@ -471,14 +548,21 @@ export default function Scene() {
     }, 12.8);
 
     tl.to(apertureGroupRef.current.scale, {
-      x: 0.15,
-      y: 0.15,
-      z: 0.15,
+      x: 0.0,
+      y: 0.0,
+      z: 0.0,
       duration: 1.0,
       ease: "power2.inOut",
     }, 12.8);
 
-    // Keep camera body active and visible in the background, do NOT scale to 0
+    // Smoothly scale the entire camera system down to 0 to make it disappear
+    tl.to(lensGroupRef.current.scale, {
+      x: 0.0,
+      y: 0.0,
+      z: 0.0,
+      duration: 1.2,
+      ease: "power2.inOut",
+    }, 12.8);
 
     // HTML Text Scene 7 (Booking Form fade in)
     tl.set(".text-scene-7", { display: "flex" }, 12.6);
@@ -501,12 +585,12 @@ export default function Scene() {
       />
 
       {/* Cinematic Viewport Lighting */}
-      <ambientLight intensity={0.08} />
+      <ambientLight intensity={0.16} />
       
       {/* Dynamic key light (warm, gold highlights) */}
       <directionalLight
         position={[6, 8, 5]}
-        intensity={2.2}
+        intensity={1.8}
         color="#fef08a"
         castShadow
       />
@@ -514,14 +598,15 @@ export default function Scene() {
       {/* Dynamic rim light (cool blue highlights along casing edges) */}
       <directionalLight
         position={[-6, 4, -4]}
-        intensity={3.5}
+        intensity={2.2}
         color="#e0f2fe"
       />
 
       {/* Internal glow point light */}
       <pointLight
+        ref={pointLightRef}
         position={[0, 0, 0.5]}
-        intensity={1.5}
+        intensity={0.8}
         distance={6}
         color="#fbbf24"
       />
@@ -551,14 +636,29 @@ export default function Scene() {
             apertureGroupRef={apertureGroupRef}
           />
 
+          {/* Golden lens flare flash mesh */}
+          <mesh ref={flareRef} position={[0, 0, 0.72]}>
+            <ringGeometry args={[0, 0.65, 32]} />
+            <meshBasicMaterial
+              color="#fbbf24"
+              transparent
+              opacity={0}
+              blending={THREE.AdditiveBlending}
+              side={THREE.DoubleSide}
+              depthWrite={false}
+            />
+          </mesh>
+
           {/* 3D Camera Body (slides in on Z from background during assembly) */}
           <CameraBody bodyRef={bodyRef} />
 
-          {/* Inside-the-lens effects: Volumetric Light & Dust */}
-          <VolumetricLight
-            lightBeamRef={lightBeamRef}
-            particlesRef={particlesRef}
-          />
+          {/* Inside-the-lens effects: Volumetric Light & Dust scaled to fit lens barrel */}
+          <group scale={[0.48, 0.48, 0.48]}>
+            <VolumetricLight
+              lightBeamRef={lightBeamRef}
+              particlesRef={particlesRef}
+            />
+          </group>
         </group>
       </group>
     </>

@@ -165,8 +165,10 @@ export default function Home() {
         setActiveStage("light");
       } else if (progress < 0.44) {
         setActiveStage("focus");
-      } else if (progress < 0.62) {
+      } else if (progress < 0.58) {
         setActiveStage("services");
+      } else if (progress < 0.66) {
+        setActiveStage("maker");
       } else if (progress < 0.80) {
         setActiveStage("gallery");
       } else if (progress < 0.91) {
@@ -334,7 +336,7 @@ export default function Home() {
           </div>
 
           {/* SCENE 2: THE LIGHT TEXT */}
-          <div className={`text-scene-2 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "light" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-2 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "light" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none', background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(212,168,67,0.04) 0%, transparent 100%)' }}>
             <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
               CHAPTER I • THE SOURCE
             </span>
@@ -637,6 +639,19 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* SCENE 4.5: THE MAKER */}
+          <div className={`text-scene-maker absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "maker" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+            <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
+              CHAPTER III.V • THE MAKER
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-semibold text-white uppercase leading-snug max-w-3xl">
+              I DIDN'T BUILD THIS BECAUSE I KNOW CAMERAS
+            </h2>
+            <p className="max-w-xl text-xs md:text-sm tracking-widest text-white/45 leading-relaxed mt-6">
+              I built it because I know how it feels — the second before you press the shutter. That half-breath. That instinct. That terror that the moment might slip past you. The Lens exists because some things are worth freezing forever.
+            </p>
           </div>
 
           {/* SCENE 5: THE INTERACTIVE CAMERA GALLERY */}

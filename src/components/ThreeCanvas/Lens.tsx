@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import * as THREE from "three";
 import { MeshTransmissionMaterial } from "@react-three/drei";
 
@@ -21,6 +21,17 @@ export default function Lens({
   focusRingRef,
   apertureGroupRef,
 }: LensProps) {
+  // Mobile detection for performance tuning
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // Generate a procedural text engraving texture for the front bezel
   const textTexture = useMemo(() => {
     if (typeof window === "undefined") return null;
@@ -168,7 +179,7 @@ export default function Lens({
 
       {/* Rear Barrel Casing */}
       <mesh position={[0, 0, -1.25]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[2.1, 1.9, 0.8, 64]} />
+        <cylinderGeometry args={[2.1, 1.7, 0.8, 64]} />
         <meshStandardMaterial color="#38383e" roughness={0.2} metalness={0.9} />
       </mesh>
 
@@ -217,15 +228,16 @@ export default function Lens({
         <sphereGeometry args={[1.88, 32, 16, 0, Math.PI * 2, 0, 0.45]} />
         <MeshTransmissionMaterial
           transmission={1.0}
-          roughness={0.02}
+          roughness={isMobile ? 0.05 : 0.02}
           thickness={1.2}
           ior={1.65}
-          chromaticAberration={0.08}
+          chromaticAberration={isMobile ? 0.0 : 0.08}
           anisotropy={0.2}
           distortion={0.25}
           distortionScale={0.2}
           temporalDistortion={0.0}
           color="#f0fdfa" // subtle cyan coating reflection
+          {...(isMobile ? { samples: 2, resolution: 256 } : {})}
         />
       </mesh>
 
@@ -234,14 +246,15 @@ export default function Lens({
         <sphereGeometry args={[1.5, 32, 16, 0, Math.PI * 2, 0, 0.4]} />
         <MeshTransmissionMaterial
           transmission={1.0}
-          roughness={0.03}
+          roughness={isMobile ? 0.05 : 0.03}
           thickness={0.6}
           ior={1.52}
-          chromaticAberration={0.04}
+          chromaticAberration={isMobile ? 0.0 : 0.04}
           anisotropy={0.1}
           distortion={0.1}
           temporalDistortion={0.0}
           color="#f0fdf4" // green coating reflection
+          {...(isMobile ? { samples: 2, resolution: 256 } : {})}
         />
       </mesh>
 
@@ -250,14 +263,15 @@ export default function Lens({
         <sphereGeometry args={[1.3, 32, 16, 0, Math.PI * 2, 0, 0.35]} />
         <MeshTransmissionMaterial
           transmission={1.0}
-          roughness={0.01}
+          roughness={isMobile ? 0.05 : 0.01}
           thickness={0.8}
           ior={1.62}
-          chromaticAberration={0.05}
+          chromaticAberration={isMobile ? 0.0 : 0.05}
           anisotropy={0.1}
           distortion={0.15}
           temporalDistortion={0.0}
           color="#f5f3ff" // purple coating reflection
+          {...(isMobile ? { samples: 2, resolution: 256 } : {})}
         />
       </mesh>
 
