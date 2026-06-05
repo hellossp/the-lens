@@ -321,59 +321,59 @@ export default function Home() {
         <div className="sticky top-0 left-0 w-full h-screen flex items-center justify-center pointer-events-none overflow-hidden">
 
           {/* SCENE 1: THE LENS TEXT */}
-          <div className={`text-scene-1 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 ${activeStage === "lens" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-1 absolute inset-0 flex flex-col items-center justify-center text-center px-6 translate-y-0 ${activeStage === "lens" ? "pointer-events-auto" : "pointer-events-none"}`}>
             <span className="text-[11px] md:text-[13px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              A PORTAL BETWEEN MOMENTS
+              A PORTAL TO FREEZE TIME
             </span>
             <h1 className="font-serif text-5xl md:text-8xl tracking-[0.2em] font-bold text-white uppercase leading-none">
               THE LENS
             </h1>
             <p className="max-w-md text-xs md:text-sm tracking-widest text-white/50 leading-relaxed mt-6">
-              A high-precision instrument of light, freezing raw human emotion in a single fraction of a second.
+              Photography is more than technical settings. It is the art of freezing a heartbeat—holding onto a fraction of a second before it slips into the past.
             </p>
           </div>
 
           {/* SCENE 2: THE LIGHT TEXT */}
-          <div className={`text-scene-2 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 ${activeStage === "light" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-2 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "light" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              CHAPTER I
+              CHAPTER I • THE SOURCE
             </span>
             <h2 className="font-serif text-4xl md:text-6xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
-              EVERY MEMORY<br />BEGINS WITH LIGHT
+              LIGHT REVEALS<br />THE SOUL
             </h2>
             <p className="max-w-lg text-xs md:text-sm tracking-widest text-white/45 leading-relaxed mt-6">
-              Rays refract through double-convex glass, scattering volumetric patterns onto the physical sensor.
+              Every memory begins as raw light. We shape, refract, and capture it through precision glass, turning fleeting rays into permanent feelings.
             </p>
           </div>
 
           {/* SCENE 3: THE FOCUS TEXT */}
-          <div className={`text-scene-3 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 ${activeStage === "focus" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-3 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "focus" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              CHAPTER II
+              CHAPTER II • INTENTION
             </span>
             <h2 className="font-serif text-4xl md:text-6xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
-              A CAMERA RECORDS
+              FOCUS CREATES<br />MEANING
             </h2>
-            <h3 className="font-serif text-2xl md:text-3xl tracking-[0.15em] font-light text-white/70 uppercase mt-2">
-              Focus Creates Meaning
+            <h3 className="font-serif text-xl md:text-2xl tracking-[0.15em] font-light text-white/70 uppercase mt-2">
+              Deciding What Truly Matters
             </h3>
             <p className="max-w-lg text-xs md:text-sm tracking-widest text-white/40 leading-relaxed mt-6">
-              As the lens elements separate and slide, the plane of sharp focus locks onto the heart of the subject.
+              In a crowded, noisy world, focus decides what matters. By isolating the subject and softening the background, we lock onto the authentic, raw emotion of the moment.
             </p>
           </div>
 
           {/* SCENE 4: CAPABILITIES / SERVICES INTERACTIVE MODE DIAL */}
-          <div className={`text-scene-services absolute inset-0 flex items-center justify-center px-6 md:px-12 opacity-0 translate-y-10 z-20 w-full max-w-6xl mx-auto ${activeStage === "services" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full max-h-[85vh] overflow-hidden">
+          <div className={`text-scene-services absolute inset-0 flex items-center justify-center px-6 md:px-12 opacity-0 translate-y-10 z-20 w-full max-w-6xl mx-auto pt-16 md:pt-0 ${activeStage === "services" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center w-full max-h-[85vh] overflow-hidden">
               {/* Left Column: Camera Mode Dial Panel */}
-              <div className="flex flex-col items-center justify-center space-y-4 select-none">
+              <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4 select-none">
                 {/* HUD LCD Viewfinder Panel */}
-                <div className="lcd-display-hud glass w-full max-w-[280px] p-3 rounded-lg border border-white/10 relative overflow-hidden bg-black/60 shadow-[inset_0_0_10px_rgba(0,0,0,0.8)]">
+                <div className="lcd-display-hud glass w-full max-w-[240px] md:max-w-[280px] p-2.5 md:p-3 rounded-lg border border-white/10 relative overflow-hidden bg-black/60 shadow-[inset_0_0_10px_rgba(0,0,0,0.8)]">
                   {/* Technical yellow accent line */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-500/80" />
 
                   {/* Inner HUD Info */}
-                  <div className="flex justify-between items-start font-mono text-[10px] text-white/50 mb-1.5">
+                  <div className="flex justify-between items-start font-mono text-[9px] md:text-[10px] text-white/50 mb-1.5">
                     <div className="flex items-center space-x-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       <span className="text-white/80">AF-C LOCK</span>
@@ -384,7 +384,7 @@ export default function Home() {
                   {/* Main Mode Index and Title Display */}
                   <div className="flex items-center space-x-3 py-1 border-t border-b border-white/5 relative">
                     {/* Vertical monospaced sliding number strip */}
-                    <div className="h-[18px] overflow-hidden relative w-6 font-mono text-sm text-gold-400 font-bold">
+                    <div className="h-[18px] overflow-hidden relative w-6 font-mono text-xs md:text-sm text-gold-400 font-bold">
                       <div
                         className="hud-number-strip flex flex-col space-y-0 text-center transition-transform duration-[350ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
                         style={{
@@ -403,7 +403,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="h-[18px] overflow-hidden relative flex-1 text-[10px] font-bold text-white uppercase tracking-wider">
+                    <div className="h-[18px] overflow-hidden relative flex-1 text-[9px] md:text-[10px] font-bold text-white uppercase tracking-wider">
                       <div className="relative w-full h-full">
                         {[
                           "WEDDINGS",
@@ -444,26 +444,26 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Machined Metal Mode Dial Console */}
-                <div className="relative w-[260px] h-[260px] flex items-center justify-center">
+                {/* Machined Metal Mode Dial Console (Responsive sizing and position translation) */}
+                <div className="relative w-[180px] h-[180px] md:w-[260px] md:h-[260px] flex items-center justify-center [--translate-dist:58px] md:[--translate-dist:85px]">
                   <div className="control-wheel-bezel absolute inset-0 rounded-full border border-white/10" />
 
-                  <div className="absolute inset-[15px] rounded-full bg-zinc-900 border border-white/5 shadow-[inset_0_0_12px_rgba(0,0,0,0.9)] flex items-center justify-center">
-                    <div className={`control-wheel-focus-ring absolute inset-[2px] rounded-full transition-all duration-300 ${focusRingPulse
+                  <div className="absolute inset-[10px] md:inset-[15px] rounded-full bg-zinc-900 border border-white/5 shadow-[inset_0_0_12px_rgba(0,0,0,0.9)] flex items-center justify-center">
+                    <div className={`control-wheel-focus-ring absolute inset-[1.5px] md:inset-[2px] rounded-full transition-all duration-300 ${focusRingPulse
                         ? "border-emerald-500/80 shadow-[0_0_18px_rgba(16,185,129,0.6),inset_0_0_10px_rgba(16,185,129,0.3)]"
                         : "border-white/5"
                       }`} />
 
-                    <div className="absolute inset-[8px] rounded-full bg-[#111112] shadow-lg flex items-center justify-center">
-                      <div className="absolute w-[80px] h-[80px] rounded-full bg-zinc-950 border border-white/10 flex flex-col items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.8),inset_0_2px_4px_rgba(255,255,255,0.05)] z-20">
-                        <Camera className="w-5.5 h-5.5 text-zinc-600 mb-0.5" />
-                        <span className="text-[7px] font-mono font-bold text-zinc-500 tracking-wider">LENS DIAL</span>
+                    <div className="absolute inset-[5px] md:inset-[8px] rounded-full bg-[#111112] shadow-lg flex items-center justify-center">
+                      <div className="absolute w-[60px] h-[60px] md:w-[80px] md:h-[80px] rounded-full bg-zinc-950 border border-white/10 flex flex-col items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.8),inset_0_2px_4px_rgba(255,255,255,0.05)] z-20">
+                        <Camera className="w-4 h-4 md:w-5.5 md:h-5.5 text-zinc-600 mb-0.5" />
+                        <span className="text-[6px] md:text-[7px] font-mono font-bold text-zinc-500 tracking-wider">DIAL</span>
                       </div>
                     </div>
                   </div>
 
                   <div
-                    className="control-wheel absolute inset-[25px] rounded-full z-10"
+                    className="control-wheel absolute inset-[18px] md:inset-[25px] rounded-full z-10"
                     style={{
                       transform: `rotate(${-90 - activeServiceIdx * 30}deg)`,
                       transition: 'transform 0.4s cubic-bezier(0.25, 1.5, 0.5, 1)'
@@ -483,11 +483,11 @@ export default function Home() {
                         key={i}
                         className="absolute left-1/2 top-1/2 -ml-[25px] -mt-[12px] w-[50px] h-[24px] flex items-center justify-center"
                         style={{
-                          transform: `rotate(${mode.angle}deg) translate(85px)`
+                          transform: `rotate(${mode.angle}deg) translate(var(--translate-dist))`
                         }}
                       >
                         <div
-                          className={`control-wheel-label-text font-mono text-[9px] font-bold tracking-[0.1em] uppercase transition-all duration-300 ${activeServiceIdx === i ? "text-gold-400 font-extrabold scale-110" : "text-white/30"
+                          className={`control-wheel-label-text font-mono text-[8px] md:text-[9px] font-bold tracking-[0.1em] uppercase transition-all duration-300 ${activeServiceIdx === i ? "text-gold-400 font-extrabold scale-110" : "text-white/30"
                             }`}
                           style={{
                             transform: `rotate(${-(-90 - activeServiceIdx * 30 + mode.angle)}deg)`
@@ -500,101 +500,101 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Highly Highlighted Tactile Navigation Buttons */}
-                <div className="flex justify-between items-center w-[260px] gap-3 mt-4">
+                {/* Tactile Navigation Buttons */}
+                <div className="flex justify-between items-center w-[180px] md:w-[260px] gap-2 md:gap-3 mt-3 md:mt-4">
                   <button
                     onClick={handlePrevService}
-                    className="flex-1 py-2.5 px-4 bg-zinc-900/90 hover:bg-zinc-800/90 border-2 border-gold-500/30 hover:border-gold-400 text-gold-400 hover:text-white font-mono text-[10px] font-bold tracking-[0.25em] uppercase rounded-md transition-all flex items-center justify-center space-x-2 shadow-[0_0_15px_rgba(245,158,11,0.1)] hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] cursor-pointer active:scale-95 active:bg-black"
+                    className="flex-1 py-2 md:py-2.5 px-3 md:px-4 bg-zinc-900/90 hover:bg-zinc-800/90 border border-gold-500/30 hover:border-gold-400 text-gold-400 hover:text-white font-mono text-[8px] md:text-[10px] font-bold tracking-[0.25em] uppercase rounded-md transition-all flex items-center justify-center space-x-1 md:space-x-2 shadow-[0_0_15px_rgba(245,158,11,0.1)] hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] cursor-pointer active:scale-95 active:bg-black"
                   >
                     <span>◄</span>
-                    <span>PREV MODE</span>
+                    <span>PREV</span>
                   </button>
                   <button
                     onClick={handleNextService}
-                    className="flex-1 py-2.5 px-4 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 border-2 border-gold-500 text-black font-mono text-[10px] font-bold tracking-[0.25em] uppercase rounded-md transition-all flex items-center justify-center space-x-2 shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_25px_rgba(245,158,11,0.4)] cursor-pointer active:scale-95 active:opacity-90"
+                    className="flex-1 py-2 md:py-2.5 px-3 md:px-4 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 border border-gold-500 text-black font-mono text-[8px] md:text-[10px] font-bold tracking-[0.25em] uppercase rounded-md transition-all flex items-center justify-center space-x-1 md:space-x-2 shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_25px_rgba(245,158,11,0.4)] cursor-pointer active:scale-95 active:opacity-90"
                   >
-                    <span>NEXT MODE</span>
+                    <span>NEXT</span>
                     <span>►</span>
                   </button>
                 </div>
               </div>
 
               {/* Right Side: Service Details Cards */}
-              <div className="relative h-[320px] flex items-center justify-center w-full">
+              <div className="relative h-[280px] md:h-[320px] flex items-center justify-center w-full">
                 {[
                   {
-                    title: "Weddings & Elopements",
-                    description: "Fine-art candid storytelling. We frame emotional vows, family legacies, and intimate celebrations in high-fidelity cinematic style.",
+                    title: "Weddings & Intimate Elopements",
+                    description: "Freezing the quiet, raw emotion of your vows. We document the tear before it falls, the sudden bursts of laughter, and the details of a day that mark the beginning of a lifelong legacy.",
                     media: "/images/wedding_couple.png",
                     specs: "50mm • f/1.2 • 1/250s • ISO 100"
                   },
                   {
-                    title: "Portraits & Family Shoots",
-                    description: "Editorial, environmental, and studio portraiture crafted to reveal the true depth, personality, and soul of individuals and families.",
+                    title: "Editorial Portraits & Legacies",
+                    description: "Personalized, soul-revealing portraiture. We click pictures that capture your true character, your family's authentic warmth, and the frozen moments you will look back on for generations.",
                     media: "/images/fashion_portrait.png",
                     specs: "85mm • f/1.4 • 1/400s • ISO 100"
                   },
                   {
-                    title: "Events & Corporate Coverage",
-                    description: "High-end coverage of brand launches, corporate summits, galas, and live events. Documenting keynote moments with editorial precision.",
+                    title: "Brand Stories & Keynotes",
+                    description: "High-fidelity coverage that captures the heartbeat of your brand. We focus on the passion of your speakers, the connections of your guests, and the milestone achievements of your team.",
                     media: "/images/travel_scenery.png",
                     specs: "24-70mm • f/2.8 • 1/500s • ISO 400"
                   },
                   {
-                    title: "Product & Commercial",
-                    description: "Engineered advertising campaigns, hero catalog images, and commercial visuals that emphasize texture, form, and product details.",
+                    title: "Commercial Form & Textures",
+                    description: "Crafted visuals that define the essence of your creation. We shape light around form, texture, and design, giving products a premium presence that commands attention.",
                     media: "/images/family_moment.png",
                     specs: "90mm Macro • f/8.0 • 1/125s • ISO 100"
                   },
                   {
-                    title: "Cinematic Videography",
-                    description: "High-definition short films, commercials, documentaries, and creative music videos color-graded with precision analog film tones.",
+                    title: "Cinematic Films & Vignettes",
+                    description: "Motion stories that feel like cinema. We record in rich, film-inspired color tones, capturing the rhythm of your voice, the atmosphere of your space, and the flow of your story.",
                     media: "/images/legacy_hero.png",
                     specs: "35mm Cine • f/2.0 • 1/50s • ISO 200"
                   },
                   {
-                    title: "Drone Aerial Coverage",
-                    description: "Stunning 4K aerial photography and videography for commercial architecture, luxury properties, and dramatic outdoor landscapes.",
+                    title: "Aerial Vantage & Vistas",
+                    description: "Breathtaking perspectives from above. We frame the scale of your architecture, the drama of your landscapes, and the sweeping angles of your special occasions.",
                     media: "/images/travel_scenery.png",
                     specs: "20mm Drone • f/4.0 • 1/1000s • ISO 100"
                   },
                   {
-                    title: "Editing & Post-Production",
-                    description: "Professional color grading, retouching, and video assembling. We convert raw files into polished, ready-to-publish creative content.",
+                    title: "Analog Grades & Retouching",
+                    description: "Polishing raw elements into timeless art. We color-grade, balance, and assemble your frames, ensuring every image carries a unified, luxury feeling that screams your brand.",
                     media: "/images/legacy_hero.png",
                     specs: "DaVinci Resolve • Lightroom Custom Lut"
                   },
                   {
-                    title: "Other Custom Services",
-                    description: "Have a unique creative concept, analog experiment, or custom campaign? Define your vision and build a custom session with us.",
+                    title: "Custom Visions & Concepts",
+                    description: "Have a unique creative concept or analog experiment? Share your thoughts below, and let us design a bespoke session built around your personal story.",
                     isOtherForm: true
                   }
                 ].map((service, idx) => (
                   <div
                     key={idx}
-                    className={`service-card-${idx} absolute inset-0 flex flex-col justify-between p-6 rounded-xl border border-white/10 bg-zinc-950/80 shadow-2xl glass w-full h-full transition-all duration-300 ${
+                    className={`service-card-${idx} absolute inset-0 flex flex-col justify-between p-4 md:p-6 rounded-xl border border-white/10 bg-zinc-950/80 shadow-2xl glass w-full h-full transition-all duration-300 ${
                       activeServiceIdx === idx && activeStage === "services"
                         ? "opacity-100 scale-100 pointer-events-auto z-10"
                         : "opacity-0 scale-95 pointer-events-none z-0"
                     }`}
                   >
-                    <div className="flex-1 flex flex-col md:flex-row gap-4 overflow-hidden h-full">
+                    <div className="flex-1 flex flex-row gap-3 md:gap-4 overflow-hidden h-full">
                       {/* Card Left: Details Copy */}
-                      <div className="flex-1 flex flex-col justify-center space-y-3">
-                        <span className="text-[8px] font-mono tracking-[0.3em] text-gold-400 uppercase">
+                      <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-3">
+                        <span className="text-[7px] md:text-[8px] font-mono tracking-[0.3em] text-gold-400 uppercase">
                           CAPABILITY {idx + 1} / 08
                         </span>
-                        <h3 className="font-serif text-sm md:text-base font-bold tracking-wide text-white uppercase leading-tight">
+                        <h3 className="font-serif text-[11px] md:text-base font-bold tracking-wide text-white uppercase leading-tight">
                           {service.title}
                         </h3>
-                        <p className="text-[10px] md:text-xs tracking-wider text-white/50 leading-relaxed">
+                        <p className="text-[9px] md:text-xs tracking-wider text-white/50 leading-relaxed max-h-[80px] md:max-h-none overflow-y-auto no-scrollbar">
                           {service.description}
                         </p>
 
                         {!service.isOtherForm && (
                           <button
                             onClick={() => openProjectExplorer(idx)}
-                            className="w-fit border border-gold-500/30 hover:border-gold-400 bg-gold-500/5 hover:bg-gold-500/10 text-gold-400 text-[9px] font-mono tracking-[0.2em] py-1.5 px-4 rounded-full transition-all cursor-pointer"
+                            className="w-fit border border-gold-500/30 hover:border-gold-400 bg-gold-500/5 hover:bg-gold-500/10 text-gold-400 text-[8px] md:text-[9px] font-mono tracking-[0.2em] py-1 md:py-1.5 px-3 md:px-4 rounded-full transition-all cursor-pointer"
                           >
                             EXPLORE PROJECTS
                           </button>
@@ -602,20 +602,20 @@ export default function Home() {
                       </div>
 
                       {/* Card Right: Media visual or Form */}
-                      <div className="w-[100px] md:w-[130px] shrink-0 h-full relative rounded-lg overflow-hidden border border-white/5 bg-black/40 flex items-center justify-center">
+                      <div className="w-[85px] md:w-[130px] shrink-0 h-full relative rounded-lg overflow-hidden border border-white/5 bg-black/40 flex items-center justify-center">
                         {service.isOtherForm ? (
-                          <div className="w-full p-2 flex flex-col justify-between h-full space-y-2">
+                          <div className="w-full p-1.5 md:p-2 flex flex-col justify-between h-full space-y-1.5 md:space-y-2">
                             <textarea
                               placeholder="Describe your vision..."
-                              className="w-full flex-1 bg-white/5 border border-white/10 rounded p-1.5 text-[9px] text-white placeholder-white/30 focus:outline-none focus:border-gold-500 resize-none"
+                              className="w-full flex-1 bg-white/5 border border-white/10 rounded p-1 text-[8px] md:text-[9px] text-white placeholder-white/30 focus:outline-none focus:border-gold-500 resize-none"
                               value={customVision}
                               onChange={(e) => setCustomVision(e.target.value)}
                             />
                             <button
                               onClick={handleCustomVisionSubmit}
-                              className="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black text-[9px] font-mono font-bold tracking-[0.1em] py-1.5 rounded transition-all cursor-pointer"
+                              className="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black text-[8px] md:text-[9px] font-mono font-bold tracking-[0.1em] py-1 md:py-1.5 rounded transition-all cursor-pointer"
                             >
-                              {customSubmitted ? "RECEIVED ✓" : "SUBMIT VISION"}
+                              {customSubmitted ? "RECEIVED ✓" : "SUBMIT"}
                             </button>
                           </div>
                         ) : (
@@ -626,7 +626,7 @@ export default function Home() {
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-black/40" />
-                            <div className="absolute bottom-1 left-1 right-1 text-[6px] font-mono text-white/50 tracking-tight bg-black/60 px-1 py-0.5 rounded text-center">
+                            <div className="absolute bottom-1 left-1 right-1 text-[5px] md:text-[6px] font-mono text-white/50 tracking-tight bg-black/60 px-1 py-0.5 rounded text-center">
                               {service.specs}
                             </div>
                           </div>
@@ -640,26 +640,26 @@ export default function Home() {
           </div>
 
           {/* SCENE 5: THE INTERACTIVE CAMERA GALLERY */}
-          <div className={`text-scene-5 absolute inset-0 flex flex-col justify-between py-10 px-6 opacity-0 translate-y-10 w-full max-w-6xl mx-auto z-30 ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-5 absolute inset-0 flex flex-col justify-between pt-16 pb-8 md:py-10 px-6 opacity-0 translate-y-10 w-full max-w-6xl mx-auto z-30 ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             {/* Top Area: Header and release shutter button */}
-            <div className="text-center space-y-2.5 z-20 max-w-xl mx-auto mt-4">
-              <span className="text-[10px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
-                CHAPTER IV • THE INTERACTIVE CAMERA
+            <div className="text-center space-y-2 md:space-y-2.5 z-20 max-w-xl mx-auto mt-4 px-4">
+              <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
+                CHAPTER IV • THE SHUTTER
               </span>
-              <h2 className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-bold text-white uppercase leading-none">
-                SNAP THE GALLERY
+              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-bold text-white uppercase leading-none">
+                FREEZE A MOMENT
               </h2>
-              <p className="text-[10px] md:text-[11px] tracking-widest text-white/40 leading-relaxed max-w-md mx-auto pt-1">
-                Trigger the shutter to capture photos and unlock your session gallery! Click directly on the 3D camera lens or use the physical shutter button below.
+              <p className="text-[9px] md:text-[11px] tracking-widest text-white/40 leading-relaxed max-w-md mx-auto pt-1">
+                This is where time stands still. Click directly on the 3D camera lens or trigger the physical shutter button below to snap real-time photos and unlock our session portfolio.
               </p>
 
-              <div className="flex flex-col items-center space-y-3 pt-2">
-                <div className={`flex flex-row items-center justify-center gap-4 z-30 relative ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`}>
+              <div className="flex flex-col items-center space-y-2 md:space-y-3 pt-1 md:pt-2">
+                <div className={`flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 z-30 relative w-full max-w-[280px] sm:max-w-none ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`}>
                   <button
                     onClick={triggerShutter}
-                    className="relative overflow-visible z-50 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black px-8 py-3 rounded-full text-[10px] font-mono font-bold tracking-[0.25em] flex items-center space-x-2 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.35)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
+                    className="w-full sm:w-auto relative overflow-visible z-50 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black px-6 md:px-8 py-2.5 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono font-bold tracking-[0.25em] flex items-center justify-center space-x-2 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.35)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
                   >
-                    <Camera className="w-4 h-4" />
+                    <Camera className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     <span>RELEASE SHUTTER</span>
                   </button>
 
@@ -673,13 +673,13 @@ export default function Home() {
                         });
                       }
                     }}
-                    className="relative overflow-visible z-50 border border-white/20 hover:border-gold-500/80 bg-zinc-950/60 hover:bg-zinc-900/60 text-white/80 hover:text-white px-8 py-3 rounded-full text-[10px] font-mono font-bold tracking-[0.25em] transition-all hover:scale-105 active:scale-95 shadow-[0_4px_15px_rgba(0,0,0,0.5)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
+                    className="w-full sm:w-auto relative overflow-visible z-50 border border-white/20 hover:border-gold-500/80 bg-zinc-950/60 hover:bg-zinc-900/60 text-white/80 hover:text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono font-bold tracking-[0.25em] transition-all hover:scale-105 active:scale-95 shadow-[0_4px_15px_rgba(0,0,0,0.5)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
                   >
                     <span>EXPLORE ALL WORK</span>
                   </button>
                 </div>
 
-                <div className="text-[9px] font-mono tracking-widest text-gold-400/90 uppercase">
+                <div className="text-[8px] md:text-[9px] font-mono tracking-widest text-gold-400/90 uppercase">
                   CAPTURED: {unlockedPhotos.length} / 4 PHOTOS
                 </div>
               </div>
@@ -736,26 +736,26 @@ export default function Home() {
           </div>
 
           {/* SCENE 6: THE LEGACY TEXT & PHOTO SPLIT LAYOUT */}
-          <div className={`text-scene-6 absolute inset-0 flex flex-col md:flex-row items-center justify-between py-12 px-8 opacity-0 translate-y-10 w-full max-w-6xl mx-auto ${activeStage === "legacy" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-6 absolute inset-0 flex flex-col md:flex-row items-center justify-between pt-16 pb-6 md:py-12 px-6 md:px-8 opacity-0 translate-y-10 w-full max-w-6xl mx-auto ${activeStage === "legacy" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             {/* Left Column: Narrative Copy */}
-            <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-4">
-              <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
-                CHAPTER V
+            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-3 md:space-y-4">
+              <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
+                CHAPTER V • THE PROMISE
               </span>
-              <h2 className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
-                LONG AFTER THE<br />MOMENT IS GONE,
+              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
+                YOUR LEGACY,<br />PRESERVED FOREVER
               </h2>
-              <h3 className="font-serif text-xl md:text-2xl tracking-[0.2em] font-light text-gold-400 uppercase">
-                The Photograph Remains.
+              <h3 className="font-serif text-lg md:text-2xl tracking-[0.2em] font-light text-gold-400 uppercase">
+                Freezing History in Silver & Light.
               </h3>
-              <p className="max-w-md text-xs md:text-sm tracking-widest text-white/40 leading-relaxed">
-                A tangible legacy that connects generations, outliving words, thoughts, and time.
+              <p className="max-w-md text-[10px] md:text-sm tracking-widest text-white/40 leading-relaxed">
+                This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.
               </p>
             </div>
 
             {/* Right Column: High-Fidelity Legacy Photograph Frame */}
-            <div className="md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0">
-              <div className="relative border border-white/10 p-2.5 rounded bg-zinc-950/60 shadow-[0_10px_35px_rgba(0,0,0,0.95)] max-w-sm w-full group overflow-hidden transition-all duration-500 hover:border-gold-500/50">
+            <div className="w-full md:w-1/2 flex justify-center md:justify-end mt-4 md:mt-0">
+              <div className="relative border border-white/10 p-2 md:p-2.5 rounded bg-zinc-950/60 shadow-[0_10px_35px_rgba(0,0,0,0.95)] max-w-[260px] sm:max-w-sm w-full group overflow-hidden transition-all duration-500 hover:border-gold-500/50">
                 {/* Crop Bracket Marks */}
                 <div className="absolute top-4 left-4 w-3.5 h-3.5 border-t-2 border-l-2 border-gold-500/70" />
                 <div className="absolute top-4 right-4 w-3.5 h-3.5 border-t-2 border-r-2 border-gold-500/70" />
@@ -778,26 +778,26 @@ export default function Home() {
           </div>
 
           {/* SCENE 7: CTA BOOKING FORM (Interactive) */}
-          <div className={`text-scene-7 absolute inset-0 flex flex-col items-center justify-center px-6 opacity-0 translate-y-10 ${activeStage === "booking" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
-            <div className="glass max-w-md w-full p-8 rounded-xl shadow-2xl relative">
+          <div className={`text-scene-7 absolute inset-0 flex flex-col items-center justify-center px-4 md:px-6 opacity-0 translate-y-10 ${activeStage === "booking" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+            <div className="glass max-w-[320px] sm:max-w-md w-full p-5 md:p-8 rounded-xl shadow-2xl relative">
 
               {submitted ? (
-                <div className="text-center py-12 space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500 flex items-center justify-center mx-auto">
-                    <Calendar className="w-6 h-6 text-gold-400" />
+                <div className="text-center py-8 md:py-12 space-y-3 md:space-y-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold-500/10 border border-gold-500 flex items-center justify-center mx-auto">
+                    <Calendar className="w-5 h-5 md:w-6 md:h-6 text-gold-400" />
                   </div>
-                  <h3 className="font-serif text-xl tracking-[0.15em] text-white">DATE REQUESTED</h3>
-                  <p className="text-[11px] tracking-widest text-white/50 leading-relaxed">
+                  <h3 className="font-serif text-lg md:text-xl tracking-[0.15em] text-white">DATE REQUESTED</h3>
+                  <p className="text-[10px] md:text-[11px] tracking-widest text-white/50 leading-relaxed">
                     Our creative studio will review your request. Expect a phone consultation within 24 hours.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleBookingSubmit} className="space-y-6">
+                <form onSubmit={handleBookingSubmit} className="space-y-4 md:space-y-6">
                   <div className="text-center space-y-1">
-                    <h3 className="font-serif text-2xl tracking-[0.2em] text-white font-bold">
-                      BEGIN YOUR STORY
+                    <h3 className="font-serif text-xl md:text-2xl tracking-[0.2em] text-white font-bold">
+                      BEGIN YOUR LEGACY
                     </h3>
-                    <p className="text-[10px] tracking-[0.2em] text-white/40">
+                    <p className="text-[8px] md:text-[10px] tracking-[0.2em] text-white/40">
                       SECURE A CINEMATIC SESSION
                     </p>
                   </div>

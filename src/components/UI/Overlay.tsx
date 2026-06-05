@@ -73,30 +73,30 @@ export default function Overlay() {
   return (
     <div className="fixed inset-0 pointer-events-none z-40 select-none font-sans">
       {/* Viewfinder Crop Marks - Four Corners */}
-      <div className="absolute top-6 left-6 w-8 h-8 border-t border-l border-white/20" />
-      <div className="absolute top-6 right-6 w-8 h-8 border-t border-r border-white/20" />
-      <div className="absolute bottom-6 left-6 w-8 h-8 border-b border-l border-white/20" />
-      <div className="absolute bottom-6 right-6 w-8 h-8 border-b border-r border-white/20" />
+      <div className="absolute top-4 left-4 md:top-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-t border-l border-white/20" />
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-t border-r border-white/20" />
+      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-b border-l border-white/20" />
+      <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-b border-r border-white/20" />
 
       {/* Viewfinder Grid Dots (Subtle camera screen grid crosshairs) */}
-      <div className="absolute top-1/2 left-6 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
-      <div className="absolute top-1/2 right-6 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
-      <div className="absolute left-1/2 top-6 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
-      <div className="absolute left-1/2 bottom-6 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
+      <div className="absolute top-1/2 left-4 md:left-8 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
+      <div className="absolute top-1/2 right-4 md:right-8 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
+      <div className="absolute left-1/2 top-4 md:top-8 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
+      <div className="absolute left-1/2 bottom-4 md:bottom-8 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
 
       {/* Viewfinder Center Autofocus Brackets */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-between w-24 h-24 pointer-events-none">
-        <div className={`w-3 h-8 border-t border-b border-l transition-all duration-500 ${
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-between w-20 h-20 md:w-24 md:h-24 pointer-events-none">
+        <div className={`w-2 h-6 md:w-3 md:h-8 border-t border-b border-l transition-all duration-500 ${
           activeStage === "focus" 
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]" 
             : "border-white/15 scale-100"
         }`} />
         {activeStage === "focus" && (
-          <div className="text-[9px] text-emerald-500/80 font-mono tracking-widest absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
+          <div className="text-[8px] md:text-[9px] text-emerald-500/80 font-mono tracking-widest absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
             LOCKED
           </div>
         )}
-        <div className={`w-3 h-8 border-t border-b border-r transition-all duration-500 ${
+        <div className={`w-2 h-6 md:w-3 md:h-8 border-t border-b border-r transition-all duration-500 ${
           activeStage === "focus" 
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]" 
             : "border-white/15 scale-100"
@@ -104,39 +104,40 @@ export default function Overlay() {
       </div>
 
       {/* Top Header Bar */}
-      <header className="absolute top-8 left-8 right-8 flex justify-between items-center pointer-events-auto mix-blend-difference">
+      <header className="absolute top-4 left-4 right-4 md:top-8 md:left-8 md:right-8 flex justify-between items-center pointer-events-auto mix-blend-difference">
         <div className="flex items-center space-x-2">
-          <Camera className="w-5 h-5 text-gold-400" />
-          <span className="font-serif text-lg tracking-[0.25em] font-semibold text-white">
+          <Camera className="w-4.5 h-4.5 md:w-5 md:h-5 text-gold-400" />
+          <span className="font-serif text-base md:text-lg tracking-[0.25em] font-semibold text-white">
             THE LENS
           </span>
         </div>
-        <div className="flex items-center space-x-6 text-[10px] tracking-[0.2em] font-medium text-white/50">
+        <div className="flex items-center space-x-4 md:space-x-6 text-[9px] md:text-[10px] tracking-[0.2em] font-medium text-white/50">
           <span className="hidden md:inline">50MM F1.2 LENSE JOURNEY</span>
           <span className="text-white/80">REC [●]</span>
         </div>
       </header>
 
       {/* Left Metadata Panel (ISO, Aperture, Shutter Speed) */}
-      <div className="absolute bottom-8 left-8 flex flex-col space-y-4 mix-blend-difference font-mono text-[11px] text-white/60">
+      {/* Aligns horizontally at bottom-left on mobile, vertically on desktop */}
+      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 flex flex-row md:flex-col space-x-4 md:space-x-0 md:space-y-4 mix-blend-difference font-mono text-[9px] md:text-[11px] text-white/60">
         <div className="flex flex-col">
-          <span className="text-[9px] text-white/30 tracking-wider">FOCAL</span>
+          <span className="text-[7px] md:text-[9px] text-white/30 tracking-wider">FOCAL</span>
           <span className="text-white font-medium tracking-wide">50mm</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[9px] text-white/30 tracking-wider">APERTURE</span>
+          <span className="text-[7px] md:text-[9px] text-white/30 tracking-wider">APERTURE</span>
           <span className="text-gold-400 font-medium tracking-wide transition-all duration-300">
             {getAperture()}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[9px] text-white/30 tracking-wider">SHUTTER</span>
+          <span className="text-[7px] md:text-[9px] text-white/30 tracking-wider">SHUTTER</span>
           <span className="text-white font-medium tracking-wide transition-all duration-300">
             {getShutter()}s
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[9px] text-white/30 tracking-wider">ISO</span>
+          <span className="text-[7px] md:text-[9px] text-white/30 tracking-wider">ISO</span>
           <span className="text-white font-medium tracking-wide transition-all duration-300">
             {getISO()}
           </span>
@@ -144,13 +145,13 @@ export default function Overlay() {
       </div>
 
       {/* Right Stage Navigation */}
-      <nav className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col space-y-6 mix-blend-difference">
+      <nav className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex flex-col space-y-4 md:space-y-6 mix-blend-difference">
         {STAGES.map((stage) => {
           const isActive = activeStage === stage.id;
           return (
             <div
               key={stage.id}
-              className="flex items-center justify-end space-x-4 group cursor-pointer pointer-events-auto"
+              className="flex items-center justify-end space-x-2 md:space-x-4 group cursor-pointer pointer-events-auto"
               onClick={() => {
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 let targetProgress = 0;
@@ -169,7 +170,7 @@ export default function Overlay() {
               }}
             >
               <span
-                className={`text-[10px] tracking-[0.25em] font-medium transition-all duration-300 text-right ${
+                className={`hidden md:inline-block text-[10px] tracking-[0.25em] font-medium transition-all duration-300 text-right ${
                   isActive
                     ? "text-gold-400 font-bold opacity-100 translate-x-0"
                     : "text-white/30 opacity-0 group-hover:opacity-60 translate-x-2"
@@ -181,7 +182,7 @@ export default function Overlay() {
                 <div
                   className={`absolute rounded-full transition-all duration-500 ${
                     isActive
-                      ? "w-2.5 h-2.5 bg-gold-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+                      ? "w-2 md:w-2.5 h-2 md:h-2.5 bg-gold-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
                       : "w-1 h-1 bg-white/20 group-hover:bg-white/50"
                   }`}
                 />
@@ -192,14 +193,14 @@ export default function Overlay() {
       </nav>
 
       {/* Bottom Progress Bar & Scroll Indicator */}
-      <footer className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-3 mix-blend-difference">
+      <footer className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 md:space-y-3 mix-blend-difference">
         {scrollProgress < 0.95 && (
-          <div className="flex flex-col items-center space-y-1 animate-bounce">
-            <span className="text-[9px] tracking-[0.3em] text-white/40">SCROLL TO TRAVEL</span>
-            <div className="w-0.5 h-4 bg-white/30" />
+          <div className="flex flex-col items-center space-y-0.5 animate-bounce">
+            <span className="text-[8px] md:text-[9px] tracking-[0.3em] text-white/40">SCROLL TO TRAVEL</span>
+            <div className="w-0.5 h-3 md:h-4 bg-white/30" />
           </div>
         )}
-        <div className="w-48 h-[1px] bg-white/10 rounded-full overflow-hidden relative">
+        <div className="w-36 md:w-48 h-[1px] bg-white/10 rounded-full overflow-hidden relative">
           <div
             className="absolute h-full left-0 top-0 bg-gold-400 transition-all duration-100 ease-out"
             style={{ width: `${scrollProgress * 100}%` }}
