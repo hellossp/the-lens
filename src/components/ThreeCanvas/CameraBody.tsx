@@ -214,8 +214,8 @@ export default function CameraBody({ bodyRef }: CameraBodyProps) {
       ].map((pos, i) => (
         <group key={i} position={[pos.x, pos.y, 0.67]}>
           {/* Screw Head */}
-          <mesh>
-            <cylinderGeometry args={[0.015, 0.015, 0.01, 8]} rotation={[Math.PI / 2, 0, 0]} />
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.015, 0.015, 0.01, 8]} />
             <meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.1} />
           </mesh>
           {/* Cross indent */}
