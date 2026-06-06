@@ -149,7 +149,8 @@ export default function Scene() {
       !focusRingRef.current ||
       !apertureGroupRef.current ||
       !lightBeamRef.current ||
-      !particlesRef.current
+      !particlesRef.current ||
+      !flareRef.current
     ) {
       return;
     }
