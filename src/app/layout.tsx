@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${inter.variable} bg-black text-white h-full antialiased selection:bg-amber-500/30 selection:text-amber-200`}
+      className={`${cinzel.variable} ${inter.variable} h-full antialiased selection:bg-amber-500/30 selection:text-amber-200`}
     >
-      <body className="min-h-full bg-black text-white overflow-x-hidden font-sans">
+      <body className="min-h-full overflow-x-hidden font-sans">
         {children}
       </body>
     </html>

@@ -283,23 +283,25 @@ export default function Home() {
 
       {/* 1. Fullscreen Camera Shutter Flash */}
       <div
-        className={`fixed inset-0 bg-white z-[9999] pointer-events-none transition-opacity duration-300 ${flash ? "opacity-95" : "opacity-0"
+        className={`fixed inset-0 z-[9999] pointer-events-none transition-opacity duration-300 ${flash ? "opacity-95" : "opacity-0"
           }`}
+        style={{ background: 'var(--background)' }}
       />
 
       {/* 2. Cinematic Preloader */}
       <div
-        className={`fixed inset-0 bg-[#050505] flex flex-col items-center justify-center z-[999] transition-opacity duration-1000 ease-in-out pointer-events-none ${loading ? "opacity-100" : "opacity-0"
+        className={`fixed inset-0 flex flex-col items-center justify-center z-[999] transition-opacity duration-1000 ease-in-out pointer-events-none ${loading ? "opacity-100" : "opacity-0"
           }`}
+        style={{ background: 'var(--background)' }}
       >
         <div className="flex flex-col items-center space-y-6">
           <div className="relative flex items-center justify-center w-20 h-20">
-            <div className="absolute inset-0 rounded-full border-2 border-white/5 border-t-gold-500 animate-spin" />
+            <div className="absolute inset-0 rounded-full border-2 border-gold-500 border-t-transparent animate-spin" />
             <Camera className="w-8 h-8 text-gold-400 animate-pulse" />
           </div>
           <div className="text-center space-y-2">
-            <h2 className="font-serif text-2xl tracking-[0.3em] text-white">THE LENS</h2>
-            <p className="text-[10px] tracking-[0.25em] text-white/40">CALIBRATING GLASS ELEMENTS...</p>
+            <h2 className="font-serif text-2xl tracking-[0.3em]" style={{ color: 'var(--scene-text)' }}>THE LENS</h2>
+            <p className="text-[10px] tracking-[0.25em]" style={{ color: 'var(--scene-body)' }}>CALIBRATING GLASS ELEMENTS...</p>
           </div>
         </div>
       </div>
@@ -322,46 +324,58 @@ export default function Home() {
         {/* Sticky viewport wrapper for all HTML copy screens */}
         <div className="sticky top-0 left-0 w-full h-screen flex items-center justify-center pointer-events-none overflow-hidden">
 
-          {/* SCENE 1: THE LENS TEXT */}
-          <div className={`text-scene-1 absolute inset-0 flex flex-col items-center justify-center text-center px-6 translate-y-0 ${activeStage === "lens" ? "pointer-events-auto" : "pointer-events-none"}`}>
-            <span className="text-[11px] md:text-[13px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              A PORTAL TO FREEZE TIME
-            </span>
-            <h1 className="font-serif text-5xl md:text-8xl tracking-[0.2em] font-bold text-white uppercase leading-none">
-              THE LENS
-            </h1>
-            <p className="max-w-md text-xs md:text-sm tracking-widest text-white/50 leading-relaxed mt-6">
-              Photography is more than technical settings. It is the art of freezing a heartbeat—holding onto a fraction of a second before it slips into the past.
-            </p>
+          {/* ═══════════════════════════════════════════════
+              SCENE 1 — THE LENS
+              Left-aligned, HUD-cleared, stacked
+              ═══════════════════════════════════════════════ */}
+          <div
+            className={`text-scene-1 absolute inset-0 translate-y-0 ${activeStage === "lens" ? "pointer-events-auto" : "pointer-events-none"}`}
+          >
+            <div className="scene-lower-third">
+              {/* Ghost camera data echo — ties visually to the left HUD */}
+              <div className="scene-spec-echo">50MM · f/8.0 · 1/250s · ISO 100</div>
+              <div className="scene-chapter-tag">A Portal to Freeze Time</div>
+              <h1 className="scene-heading">THE LENS</h1>
+              <p className="scene-body">
+                Photography is the art of freezing a heartbeat — holding a fraction of a second before it slips into the forever past.
+              </p>
+            </div>
           </div>
 
-          {/* SCENE 2: THE LIGHT TEXT */}
-          <div className={`text-scene-2 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "light" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none', background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(212,168,67,0.04) 0%, transparent 100%)' }}>
-            <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              CHAPTER I • THE SOURCE
-            </span>
-            <h2 className="font-serif text-4xl md:text-6xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
-              LIGHT REVEALS<br />THE SOUL
-            </h2>
-            <p className="max-w-lg text-xs md:text-sm tracking-widest text-white/45 leading-relaxed mt-6">
-              Every memory begins as raw light. We shape, refract, and capture it through precision glass, turning fleeting rays into permanent feelings.
-            </p>
+          {/* ═══════════════════════════════════════════════
+              SCENE 2 — THE LIGHT
+              Right-aligned — 3D lens drifts left in 3D space
+              ═══════════════════════════════════════════════ */}
+          <div
+            className={`text-scene-2 absolute inset-0 opacity-0 translate-y-10 ${activeStage === "light" ? "pointer-events-auto" : "pointer-events-none"}`}
+            style={{ display: 'none' }}
+          >
+            <div className="scene-lower-third align-right">
+              <div className="scene-spec-echo">50MM · f/1.2 · 1/250s · ISO 800</div>
+              <div className="scene-chapter-tag">Chapter I · The Source</div>
+              <h2 className="scene-heading">LIGHT REVEALS<br />THE SOUL</h2>
+              <p className="scene-body">
+                Every memory begins as raw light. We shape, refract, and capture it through precision glass — turning fleeting rays into permanent feelings.
+              </p>
+            </div>
           </div>
 
-          {/* SCENE 3: THE FOCUS TEXT */}
-          <div className={`text-scene-3 absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "focus" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
-            <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              CHAPTER II • INTENTION
-            </span>
-            <h2 className="font-serif text-4xl md:text-6xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
-              FOCUS CREATES<br />MEANING
-            </h2>
-            <h3 className="font-serif text-xl md:text-2xl tracking-[0.15em] font-light text-white/70 uppercase mt-2">
-              Deciding What Truly Matters
-            </h3>
-            <p className="max-w-lg text-xs md:text-sm tracking-widest text-white/40 leading-relaxed mt-6">
-              In a crowded, noisy world, focus decides what matters. By isolating the subject and softening the background, we lock onto the authentic, raw emotion of the moment.
-            </p>
+          {/* ═══════════════════════════════════════════════
+              SCENE 3 — THE FOCUS
+              Left-aligned — 3D lens drifts right in 3D space
+              ═══════════════════════════════════════════════ */}
+          <div
+            className={`text-scene-3 absolute inset-0 opacity-0 translate-y-10 ${activeStage === "focus" ? "pointer-events-auto" : "pointer-events-none"}`}
+            style={{ display: 'none' }}
+          >
+            <div className="scene-lower-third">
+              <div className="scene-spec-echo">50MM · f/2.8 · 1/500s · ISO 400</div>
+              <div className="scene-chapter-tag">Chapter II · Intention</div>
+              <h2 className="scene-heading">FOCUS CREATES<br />MEANING</h2>
+              <p className="scene-body">
+                In a crowded, noisy world, focus decides what truly matters. By isolating the subject and softening everything else, we lock onto authentic, raw emotion.
+              </p>
+            </div>
           </div>
 
           {/* SCENE 4: CAPABILITIES / SERVICES INTERACTIVE MODE DIAL */}
@@ -646,10 +660,10 @@ export default function Home() {
             <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
               CHAPTER III.V • THE MAKER
             </span>
-            <h2 className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-semibold text-white uppercase leading-snug max-w-3xl">
-              I DIDN'T BUILD THIS BECAUSE I KNOW CAMERAS
+            <h2 className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-semibold uppercase leading-snug max-w-3xl" style={{ color: 'var(--scene-text)' }}>
+              I DIDN&apos;T BUILD THIS BECAUSE I KNOW CAMERAS
             </h2>
-            <p className="max-w-xl text-xs md:text-sm tracking-widest text-white/45 leading-relaxed mt-6">
+            <p className="max-w-xl text-xs md:text-sm tracking-widest leading-relaxed mt-6" style={{ color: 'var(--scene-body)' }}>
               I built it because I know how it feels — the second before you press the shutter. That half-breath. That instinct. That terror that the moment might slip past you. The Lens exists because some things are worth freezing forever.
             </p>
           </div>
@@ -661,10 +675,10 @@ export default function Home() {
               <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
                 CHAPTER IV • THE SHUTTER
               </span>
-              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-bold text-white uppercase leading-none">
+              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-bold uppercase leading-none" style={{ color: 'var(--scene-text)' }}>
                 FREEZE A MOMENT
               </h2>
-              <p className="text-[9px] md:text-[11px] tracking-widest text-white/40 leading-relaxed max-w-md mx-auto pt-1">
+              <p className="text-[9px] md:text-[11px] tracking-widest leading-relaxed max-w-md mx-auto pt-1" style={{ color: 'var(--scene-body)' }}>
                 This is where time stands still. Click directly on the 3D camera lens or trigger the physical shutter button below to snap real-time photos and unlock our session portfolio.
               </p>
 
@@ -757,20 +771,20 @@ export default function Home() {
               <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
                 CHAPTER V • THE PROMISE
               </span>
-              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-semibold text-white uppercase leading-snug">
+              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-semibold uppercase leading-snug" style={{ color: 'var(--scene-text)' }}>
                 YOUR LEGACY,<br />PRESERVED FOREVER
               </h2>
               <h3 className="font-serif text-lg md:text-2xl tracking-[0.2em] font-light text-gold-400 uppercase">
-                Freezing History in Silver & Light.
+                Freezing History in Silver &amp; Light.
               </h3>
-              <p className="max-w-md text-[10px] md:text-sm tracking-widest text-white/40 leading-relaxed">
+              <p className="max-w-md text-[10px] md:text-sm tracking-widest leading-relaxed" style={{ color: 'var(--scene-body)' }}>
                 This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.
               </p>
             </div>
 
             {/* Right Column: High-Fidelity Legacy Photograph Frame */}
             <div className="w-full md:w-1/2 flex justify-center md:justify-end mt-4 md:mt-0">
-              <div className="relative border border-white/10 p-2 md:p-2.5 rounded bg-zinc-950/60 shadow-[0_10px_35px_rgba(0,0,0,0.95)] max-w-[260px] sm:max-w-sm w-full group overflow-hidden transition-all duration-500 hover:border-gold-500/50">
+              <div className="relative border p-2 md:p-2.5 rounded shadow-[0_10px_35px_rgba(0,0,0,0.95)] max-w-[260px] sm:max-w-sm w-full group overflow-hidden transition-all duration-500 hover:border-gold-500/50" style={{ borderColor: 'var(--panel-border)', background: 'var(--panel-bg)' }}>
                 {/* Crop Bracket Marks */}
                 <div className="absolute top-4 left-4 w-3.5 h-3.5 border-t-2 border-l-2 border-gold-500/70" />
                 <div className="absolute top-4 right-4 w-3.5 h-3.5 border-t-2 border-r-2 border-gold-500/70" />
@@ -801,8 +815,8 @@ export default function Home() {
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold-500/10 border border-gold-500 flex items-center justify-center mx-auto">
                     <Calendar className="w-5 h-5 md:w-6 md:h-6 text-gold-400" />
                   </div>
-                  <h3 className="font-serif text-lg md:text-xl tracking-[0.15em] text-white">DATE REQUESTED</h3>
-                  <p className="text-[10px] md:text-[11px] tracking-widest text-white/50 leading-relaxed">
+                  <h3 className="font-serif text-lg md:text-xl tracking-[0.15em]" style={{ color: 'var(--scene-text)' }}>DATE REQUESTED</h3>
+                  <p className="text-[10px] md:text-[11px] tracking-widest leading-relaxed" style={{ color: 'var(--scene-body)' }}>
                     Our creative studio will review your request. Expect a phone consultation within 24 hours.
                   </p>
                 </div>
