@@ -6,6 +6,7 @@ import LenisProvider from "@/components/UI/LenisProvider";
 import CustomCursor from "@/components/UI/CustomCursor";
 import Overlay from "@/components/UI/Overlay";
 import { Camera, Calendar, ArrowRight, User, Mail, MessageSquare, Lock, Eye, X } from "lucide-react";
+import GrabModal from "@/components/UI/GrabModal";
 
 // Dynamically import the Canvas Container to bypass SSR issues
 const CanvasContainer = dynamic(
@@ -979,6 +980,8 @@ export default function Home() {
           })()}
         </div>
       )}
+      {/* 9. Sticky Grab CTA + Enquiry Modal */}
+      <GrabModal />
     </LenisProvider>
   );
 }

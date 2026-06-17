@@ -439,3 +439,463 @@ html.lenis body {
   mix-blend-mode: multiply;
   opacity: 0.035;
 }
+
+/* -----------------------------------------------
+   GRAB CTA — STICKY FLOATING BUTTON
+   ----------------------------------------------- */
+/* Entry animation — button slides up after preloader clears */
+@keyframes grab-cta-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.grab-cta-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem 0.65rem 0.85rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: #0a0a0b;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 4px 24px rgba(251, 191, 36, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease,
+              background 0.25s ease;
+  white-space: nowrap;
+  animation: grab-cta-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.grab-cta-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 8px 32px rgba(251, 191, 36, 0.55),
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.grab-cta-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.grab-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.grab-cta-label {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.grab-cta-arrow {
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.grab-cta-btn:hover .grab-cta-arrow {
+  transform: translateX(3px);
+}
+
+/* Periodic pulse animation */
+@keyframes grab-pulse {
+  0%   { box-shadow: 0 4px 24px rgba(251,191,36,0.35), 0 0 0 0 rgba(251,191,36,0.6); }
+  50%  { box-shadow: 0 4px 24px rgba(251,191,36,0.35), 0 0 0 14px rgba(251,191,36,0); }
+  100% { box-shadow: 0 4px 24px rgba(251,191,36,0.35), 0 0 0 0 rgba(251,191,36,0); }
+}
+
+.grab-cta-pulse {
+  animation: grab-pulse 1s ease-out;
+}
+
+/* -----------------------------------------------
+   GRAB MODAL — OVERLAY + PANEL
+   ----------------------------------------------- */
+.grab-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  background: rgba(2, 2, 2, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: grab-overlay-in 0.3s ease;
+}
+
+@keyframes grab-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.grab-modal {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(160deg, #111113 0%, #0d0d0f 60%, #0a0a0c 100%);
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  border-radius: 16px;
+  padding: 2.25rem 2rem 2rem;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 32px 80px rgba(0, 0, 0, 0.9),
+    0 0 60px rgba(251, 191, 36, 0.05);
+  animation: grab-modal-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  scrollbar-width: none;
+}
+
+.grab-modal::-webkit-scrollbar { display: none; }
+
+@keyframes grab-modal-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Gold corner accents */
+.grab-modal::before,
+.grab-modal::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgba(251, 191, 36, 0.5);
+  border-style: solid;
+}
+.grab-modal::before {
+  top: 12px;
+  left: 12px;
+  border-width: 1px 0 0 1px;
+  border-radius: 2px 0 0 0;
+}
+.grab-modal::after {
+  bottom: 12px;
+  right: 12px;
+  border-width: 0 1px 1px 0;
+  border-radius: 0 0 2px 0;
+}
+
+.grab-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.grab-modal-close:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-color: rgba(251,191,36,0.4);
+}
+
+/* Header */
+.grab-modal-header {
+  margin-bottom: 1.75rem;
+}
+
+.grab-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(251,191,36,0.1);
+  border: 1px solid rgba(251,191,36,0.25);
+  border-radius: 100px;
+  color: #fbbf24;
+  font-size: 9px;
+  font-family: var(--font-inter), monospace;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.grab-modal-title {
+  font-family: var(--font-cinzel), serif;
+  font-size: clamp(1.4rem, 4vw, 1.85rem);
+  font-weight: 700;
+  color: #f4f4f5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+}
+
+.grab-modal-subtitle {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  max-width: 38ch;
+}
+
+.grab-modal-rule {
+  width: 48px;
+  height: 1.5px;
+  background: linear-gradient(90deg, #fbbf24 0%, transparent 100%);
+  border-radius: 2px;
+  margin-top: 1.1rem;
+}
+
+/* Form */
+.grab-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.grab-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+@media (max-width: 480px) {
+  .grab-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grab-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.grab-form-field--full {
+  grid-column: 1 / -1;
+}
+
+.grab-form-field label {
+  font-size: 9.5px;
+  font-family: var(--font-inter), monospace;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.grab-form-field input,
+.grab-form-field textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-size: 13px;
+  font-family: var(--font-inter), sans-serif;
+  color: #f4f4f5;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.grab-form-field input::placeholder,
+.grab-form-field textarea::placeholder {
+  color: rgba(255,255,255,0.2);
+}
+
+.grab-form-field input:focus,
+.grab-form-field textarea:focus {
+  border-color: rgba(251,191,36,0.45);
+  background: rgba(251,191,36,0.03);
+  box-shadow: 0 0 0 3px rgba(251,191,36,0.07);
+}
+
+/* Date input color fix */
+.grab-form-field input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Custom select */
+.grab-select-wrapper {
+  position: relative;
+}
+
+.grab-select-wrapper select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  padding: 0.65rem 2.2rem 0.65rem 0.85rem;
+  font-size: 13px;
+  font-family: var(--font-inter), sans-serif;
+  color: #f4f4f5;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.grab-select-wrapper select option {
+  background: #111113;
+  color: #f4f4f5;
+}
+
+.grab-select-wrapper select:focus {
+  border-color: rgba(251,191,36,0.45);
+  box-shadow: 0 0 0 3px rgba(251,191,36,0.07);
+}
+
+.grab-select-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.3);
+  pointer-events: none;
+}
+
+/* Submit Button */
+.grab-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: #0a0a0b;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 0.35rem;
+  box-shadow: 0 4px 20px rgba(251,191,36,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+}
+
+.grab-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(251,191,36,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.grab-submit-btn:active {
+  transform: translateY(0);
+}
+
+.grab-form-note {
+  text-align: center;
+  font-size: 9px;
+  font-family: var(--font-inter), monospace;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.18);
+  text-transform: uppercase;
+}
+
+/* Success State */
+.grab-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 1rem 1rem;
+  text-align: center;
+  animation: grab-modal-in 0.4s ease;
+}
+
+.grab-success-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(251,191,36,0.1);
+  border: 1px solid rgba(251,191,36,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fbbf24;
+  box-shadow: 0 0 28px rgba(251,191,36,0.2);
+}
+
+.grab-success h3 {
+  font-family: var(--font-cinzel), serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f4f4f5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.grab-success p {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+}
+
+.grab-success-shutter {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.grab-success-shutter span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fbbf24;
+  animation: grab-shutter-dots 1.2s ease-in-out infinite;
+}
+
+.grab-success-shutter span:nth-child(2) { animation-delay: 0.15s; }
+.grab-success-shutter span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes grab-shutter-dots {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+  40%           { opacity: 1;    transform: scale(1.2); }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .grab-cta-btn {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    font-size: 11px;
+    padding: 0.55rem 1rem 0.55rem 0.7rem;
+  }
+
+  .grab-modal {
+    padding: 1.75rem 1.25rem 1.5rem;
+    border-radius: 12px;
+  }
+}
