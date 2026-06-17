@@ -19,6 +19,7 @@ export default function Scene() {
   const lensGroupRef = useRef<THREE.Group>(null);
   const lensModelRef = useRef<THREE.Group>(null);
   const bodyRef = useRef<THREE.Group>(null);
+  const bodyGroupRef = useRef<THREE.Group>(null);
 
   const frontGlassRef = useRef<THREE.Mesh>(null);
   const midGlass1Ref = useRef<THREE.Mesh>(null);
@@ -143,6 +144,7 @@ export default function Scene() {
       !lensGroupRef.current ||
       !lensModelRef.current ||
       !bodyRef.current ||
+      !bodyGroupRef.current ||
       !frontGlassRef.current ||
       !midGlass1Ref.current ||
       !midGlass2Ref.current ||
@@ -163,9 +165,11 @@ export default function Scene() {
       lensModelRef.current.scale.setScalar(0.48);
     }
 
-    // Reset Camera Body state
+    // Reset Camera Body state — bodyGroupRef tracks lensGroupRef position so body moves with the lens group
     bodyRef.current.scale.set(0.001, 0.001, 0.001);
     bodyRef.current.position.set(0, 0.15, -1.76); // standard snapped position aligned to lens mount
+    // Start bodyGroupRef at the same world position as lensGroupRef
+    bodyGroupRef.current.position.set(0, 0, 0);
 
     // Register custom 8-detents snap ease
     gsap.registerEase("detent-8", (progress: number) => {
@@ -218,6 +222,15 @@ export default function Scene() {
       ease: "power2.inOut",
     }, 1.8);
 
+    // Keep body group in sync with lens group position (but without lens rotation)
+    tl.to(bodyGroupRef.current.position, {
+      x: -1.0,
+      y: 0.1,
+      z: 0.3,
+      duration: 1.8,
+      ease: "power2.inOut",
+    }, 1.8);
+
     tl.to(baseRotation.current, {
       x: 0.1,
       y: -0.6, // tilt to align the glass refraction in light direction
@@ -251,6 +264,14 @@ export default function Scene() {
     // Lens travels to the right, focus ring rotates, and glass elements separate
     // ----------------------------------------------------
     tl.to(lensGroupRef.current.position, {
+      x: 1.1,
+      y: -0.1,
+      z: -0.4,
+      duration: 2.2,
+      ease: "power2.inOut",
+    }, 3.6);
+
+    tl.to(bodyGroupRef.current.position, {
       x: 1.1,
       y: -0.1,
       z: -0.4,
@@ -375,6 +396,14 @@ export default function Scene() {
       ease: "power2.inOut",
     }, 5.2);
 
+    tl.to(bodyGroupRef.current.position, {
+      x: 0.0,
+      y: 0.0,
+      z: 0.0,
+      duration: 1.8,
+      ease: "power2.inOut",
+    }, 5.2);
+
     // Reassemble glass elements inside lens
     tl.to(frontGlassRef.current.position, { z: 1.5, duration: 1.8, ease: "power2.inOut" }, 5.2);
     tl.to(midGlass1Ref.current.position, { z: 0.7, duration: 1.8, ease: "power2.inOut" }, 5.2);
@@ -492,6 +521,14 @@ export default function Scene() {
       ease: "sine.inOut",
     }, 11.2);
 
+    tl.to(bodyGroupRef.current.position, {
+      x: -1.2,
+      y: -0.5,
+      z: -1.0,
+      duration: 1.4,
+      ease: "sine.inOut",
+    }, 11.2);
+
     tl.to(baseRotation.current, {
       x: 0.15,
       y: -0.2,
@@ -522,6 +559,14 @@ export default function Scene() {
       x: 0.0,
       y: 0.1,
       z: -10.0, // Retreat deep into the dark background
+      duration: 1.4,
+      ease: "power2.inOut",
+    }, 12.6);
+
+    tl.to(bodyGroupRef.current.position, {
+      x: 0.0,
+      y: 0.1,
+      z: -10.0,
       duration: 1.4,
       ease: "power2.inOut",
     }, 12.6);
@@ -617,6 +662,7 @@ export default function Scene() {
         Wrapped inside a responsive wrapper group to adjust scale and offsets dynamically on mobile viewports.
       */}
       <group ref={responsiveWrapperRef}>
+        {/* Lens group — rotates freely including Z barrel spin */}
         <group
           ref={lensGroupRef}
           onClick={(e) => {
@@ -650,9 +696,6 @@ export default function Scene() {
             />
           </mesh>
 
-          {/* 3D Camera Body (slides in on Z from background during assembly) */}
-          <CameraBody bodyRef={bodyRef} />
-
           {/* Inside-the-lens effects: Volumetric Light & Dust scaled to fit lens barrel */}
           <group scale={[0.48, 0.48, 0.48]}>
             <VolumetricLight
@@ -660,6 +703,13 @@ export default function Scene() {
               particlesRef={particlesRef}
             />
           </group>
+        </group>
+
+        {/* Camera body group — separate from lensGroupRef so it does NOT inherit barrel Z-spin.
+            GSAP animates bodyGroupRef.position to match lensGroupRef.position for spatial sync.
+            The body itself stays perfectly upright at all times. */}
+        <group ref={bodyGroupRef}>
+          <CameraBody bodyRef={bodyRef} />
         </group>
       </group>
     </>
