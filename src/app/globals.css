@@ -899,3 +899,166 @@ html.lenis body {
     border-radius: 12px;
   }
 }
+
+/* Optional label badge */
+.grab-optional {
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.25);
+  text-transform: none;
+  font-style: italic;
+}
+
+/* Instagram prefix field */
+.grab-instagram-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grab-instagram-wrapper:focus-within {
+  border-color: rgba(251,191,36,0.45);
+  box-shadow: 0 0 0 3px rgba(251,191,36,0.07);
+}
+
+.grab-instagram-prefix {
+  padding: 0 0.65rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(251,191,36,0.7);
+  background: rgba(251,191,36,0.05);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  line-height: 1;
+  user-select: none;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.grab-instagram-input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.65rem 0.85rem !important;
+  outline: none;
+}
+
+/* Pricing card */
+.grab-pricing-card {
+  background: linear-gradient(135deg, rgba(251,191,36,0.07) 0%, rgba(217,119,6,0.05) 100%);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px;
+  padding: 1rem 1.1rem 0.85rem;
+  margin-top: 0.2rem;
+}
+
+.grab-pricing-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.grab-pricing-label {
+  font-size: 9.5px;
+  font-family: var(--font-inter), monospace;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+.grab-pricing-amount {
+  font-family: var(--font-cinzel), serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fbbf24;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.grab-pricing-note {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  font-style: italic;
+}
+
+/* Error message */
+.grab-error {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 11.5px;
+  color: #fca5a5;
+  line-height: 1.5;
+}
+
+/* Loading spinner */
+.grab-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: #0a0a0b;
+  border-radius: 50%;
+  animation: grab-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes grab-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Submit button disabled state */
+.grab-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Closing statement */
+.grab-closing-statement {
+  text-align: center;
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.22);
+  letter-spacing: 0.02em;
+  font-style: italic;
+  padding: 0 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 0.85rem;
+  margin-top: 0.2rem;
+}
+
+/* Success close button */
+.grab-success-close-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.grab-success-close-btn:hover {
+  border-color: rgba(251,191,36,0.4);
+  color: #fbbf24;
+}

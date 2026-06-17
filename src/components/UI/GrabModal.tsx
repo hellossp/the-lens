@@ -2,40 +2,53 @@
 
 import { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { X, Send, Camera, Sparkles, ChevronDown } from "lucide-react";
+import { X, Send, Camera, Sparkles, ChevronDown, CheckCircle } from "lucide-react";
+
+const WEB3FORMS_KEY = "abadc18b-7389-42d8-88e5-b0e01f2ac477";
+
+const COUNTRIES = [
+  "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia",
+  "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Belgium", "Bolivia",
+  "Bosnia and Herzegovina", "Brazil", "Bulgaria", "Cambodia", "Canada", "Chile",
+  "China", "Colombia", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Ecuador",
+  "Egypt", "Estonia", "Ethiopia", "Finland", "France", "Georgia", "Germany",
+  "Ghana", "Greece", "Hungary", "India", "Indonesia", "Iran", "Iraq", "Ireland",
+  "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
+  "Kuwait", "Latvia", "Lebanon", "Lithuania", "Luxembourg", "Malaysia", "Mexico",
+  "Moldova", "Morocco", "Nepal", "Netherlands", "New Zealand", "Nigeria", "Norway",
+  "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Poland", "Portugal",
+  "Qatar", "Romania", "Russia", "Saudi Arabia", "Serbia", "Singapore",
+  "Slovakia", "Slovenia", "South Africa", "South Korea", "Spain", "Sri Lanka",
+  "Sweden", "Switzerland", "Taiwan", "Tanzania", "Thailand", "Turkey",
+  "UAE", "Uganda", "Ukraine", "United Kingdom", "United States", "Uruguay",
+  "Uzbekistan", "Venezuela", "Vietnam", "Zimbabwe",
+];
 
 type FormState = {
   name: string;
   email: string;
   phone: string;
-  service: string;
-  date: string;
-  vision: string;
+  country: string;
+  studio: string;
+  website: string;
+  instagram: string;
 };
-
-const SERVICES = [
-  "Weddings & Elopements",
-  "Editorial Portraits",
-  "Corporate Events",
-  "Commercial Campaigns",
-  "Film & Cinematic",
-  "Drone Aerial",
-  "Post-Processing",
-  "Custom Vision",
-];
 
 export default function GrabModal() {
   const [open, setOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [pulsing, setPulsing] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
     phone: "",
-    service: "",
-    date: "",
-    vision: "",
+    country: "",
+    studio: "",
+    website: "",
+    instagram: "",
   });
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +58,7 @@ export default function GrabModal() {
     return () => clearTimeout(t);
   }, []);
 
-  // Periodic pulse to attract attention
+  // Periodic pulse to attract attention every 6s
   useEffect(() => {
     const interval = setInterval(() => {
       setPulsing(true);
@@ -58,20 +71,64 @@ export default function GrabModal() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (error) setError("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: `New Website Enquiry — ${form.name}`,
+        from_name: "The Lens Studio",
+        name: form.name,
+        email: form.email,
+        phone: form.phone || "Not provided",
+        country: form.country,
+        "business_or_studio_name": form.studio || "Not provided",
+        "website_url": form.website || "Not provided",
+        "instagram_profile": form.instagram,
+        "package": "Starting at $250",
+      };
+
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    // Reset after close animation
     setTimeout(() => {
       setSubmitted(false);
-      setOpen(false);
-      setForm({ name: "", email: "", phone: "", service: "", date: "", vision: "" });
-    }, 3500);
+      setError("");
+      setForm({
+        name: "", email: "", phone: "", country: "",
+        studio: "", website: "", instagram: "",
+      });
+    }, 300);
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === overlayRef.current) setOpen(false);
+    if (e.target === overlayRef.current) handleClose();
   };
 
   // Lock body scroll while modal is open
@@ -112,7 +169,7 @@ export default function GrabModal() {
           <div className="grab-modal">
             {/* Close button */}
             <button
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
               className="grab-modal-close"
               aria-label="Close"
             >
@@ -132,9 +189,11 @@ export default function GrabModal() {
               <div className="grab-modal-rule" />
             </div>
 
-            {/* Form / Success */}
+            {/* Form / Success State */}
             {!submitted ? (
               <form onSubmit={handleSubmit} className="grab-modal-form">
+
+                {/* Row 1: Full Name + Email */}
                 <div className="grab-form-row">
                   <div className="grab-form-field">
                     <label htmlFor="grab-name">Full Name *</label>
@@ -143,13 +202,14 @@ export default function GrabModal() {
                       name="name"
                       type="text"
                       required
-                      placeholder="Your name"
+                      placeholder="e.g. Alex Sharma"
                       value={form.name}
                       onChange={handleChange}
+                      disabled={submitting}
                     />
                   </div>
                   <div className="grab-form-field">
-                    <label htmlFor="grab-email">Email *</label>
+                    <label htmlFor="grab-email">Email Address *</label>
                     <input
                       id="grab-email"
                       name="email"
@@ -158,86 +218,155 @@ export default function GrabModal() {
                       placeholder="you@example.com"
                       value={form.email}
                       onChange={handleChange}
+                      disabled={submitting}
                     />
                   </div>
                 </div>
 
+                {/* Row 2: Phone + Country */}
                 <div className="grab-form-row">
                   <div className="grab-form-field">
-                    <label htmlFor="grab-phone">Phone</label>
+                    <label htmlFor="grab-phone">Phone Number <span className="grab-optional">(optional)</span></label>
                     <input
                       id="grab-phone"
                       name="phone"
                       type="tel"
-                      placeholder="+91 98765 43210"
+                      placeholder="+1 555 000 0000"
                       value={form.phone}
                       onChange={handleChange}
+                      disabled={submitting}
                     />
                   </div>
                   <div className="grab-form-field">
-                    <label htmlFor="grab-date">Preferred Date</label>
+                    <label htmlFor="grab-country">Country *</label>
+                    <div className="grab-select-wrapper">
+                      <select
+                        id="grab-country"
+                        name="country"
+                        required
+                        value={form.country}
+                        onChange={handleChange}
+                        disabled={submitting}
+                      >
+                        <option value="">Select your country</option>
+                        {COUNTRIES.map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="grab-select-icon w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 3: Studio + Website */}
+                <div className="grab-form-row">
+                  <div className="grab-form-field">
+                    <label htmlFor="grab-studio">Business / Studio Name</label>
                     <input
-                      id="grab-date"
-                      name="date"
-                      type="date"
-                      value={form.date}
+                      id="grab-studio"
+                      name="studio"
+                      type="text"
+                      placeholder="e.g. Golden Frame Co."
+                      value={form.studio}
                       onChange={handleChange}
+                      disabled={submitting}
+                    />
+                  </div>
+                  <div className="grab-form-field">
+                    <label htmlFor="grab-website">Website URL <span className="grab-optional">(optional)</span></label>
+                    <input
+                      id="grab-website"
+                      name="website"
+                      type="url"
+                      placeholder="https://yourstudio.com"
+                      value={form.website}
+                      onChange={handleChange}
+                      disabled={submitting}
                     />
                   </div>
                 </div>
 
+                {/* Row 4: Instagram (full width) */}
                 <div className="grab-form-field grab-form-field--full">
-                  <label htmlFor="grab-service">What are you looking for? *</label>
-                  <div className="grab-select-wrapper">
-                    <select
-                      id="grab-service"
-                      name="service"
+                  <label htmlFor="grab-instagram">Instagram Profile *</label>
+                  <div className="grab-instagram-wrapper">
+                    <span className="grab-instagram-prefix">@</span>
+                    <input
+                      id="grab-instagram"
+                      name="instagram"
+                      type="text"
                       required
-                      value={form.service}
+                      placeholder="yourstudio"
+                      value={form.instagram}
                       onChange={handleChange}
-                    >
-                      <option value="">Select a service</option>
-                      {SERVICES.map((s) => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="grab-select-icon w-3.5 h-3.5" />
+                      disabled={submitting}
+                      className="grab-instagram-input"
+                    />
                   </div>
                 </div>
 
-                <div className="grab-form-field grab-form-field--full">
-                  <label htmlFor="grab-vision">Your Vision</label>
-                  <textarea
-                    id="grab-vision"
-                    name="vision"
-                    rows={3}
-                    placeholder="Describe the story you want captured — a sunset elopement in Tuscany, a high-fashion editorial, anything..."
-                    value={form.vision}
-                    onChange={handleChange}
-                  />
+                {/* Pricing Card */}
+                <div className="grab-pricing-card">
+                  <div className="grab-pricing-top">
+                    <span className="grab-pricing-label">Packages Starting From</span>
+                    <span className="grab-pricing-amount">$250</span>
+                  </div>
+                  <p className="grab-pricing-note">
+                    Final quote depends on the required features, integrations, and project scope.
+                  </p>
                 </div>
 
-                <button type="submit" className="grab-submit-btn" id="grab-submit">
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Send Enquiry</span>
+                {/* Error message */}
+                {error && (
+                  <div className="grab-error">
+                    <span>⚠ {error}</span>
+                  </div>
+                )}
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  className="grab-submit-btn"
+                  id="grab-submit"
+                  disabled={submitting}
+                >
+                  {submitting ? (
+                    <>
+                      <span className="grab-spinner" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      <span>Send Enquiry</span>
+                    </>
+                  )}
                 </button>
 
-                <p className="grab-form-note">
-                  This is a sample site — no data is actually sent.
+                {/* Closing Statement */}
+                <p className="grab-closing-statement">
+                  Every website is built using this proven design framework and then customized to match your brand, portfolio, colors, content, and business goals.
                 </p>
               </form>
             ) : (
+              /* ─── Success State ─── */
               <div className="grab-success">
                 <div className="grab-success-ring">
-                  <Camera className="w-8 h-8" />
+                  <CheckCircle className="w-8 h-8" />
                 </div>
                 <h3>Enquiry Received.</h3>
-                <p>We&apos;ll reach out within 24 hours to craft your story.</p>
+                <p>
+                  Thank you, {form.name.split(" ")[0]}! We&apos;ll reach out within 24 hours
+                  to craft your perfect website.
+                </p>
                 <div className="grab-success-shutter">
                   <span />
                   <span />
                   <span />
                 </div>
+                <button onClick={handleClose} className="grab-success-close-btn">
+                  Close
+                </button>
               </div>
             )}
           </div>
@@ -246,9 +375,5 @@ export default function GrabModal() {
     </>
   );
 
-  // Use a React Portal to render directly into document.body.
-  // This escapes any CSS stacking contexts from parent elements
-  // (the Lenis scroll wrapper, sticky overlays, etc.) so that
-  // position: fixed and z-index work correctly at all scroll positions.
   return ReactDOM.createPortal(content, document.body);
 }
