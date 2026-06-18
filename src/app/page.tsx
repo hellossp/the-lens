@@ -658,15 +658,25 @@ export default function Home() {
 
           {/* SCENE 4.5: THE MAKER */}
           <div className={`text-scene-maker absolute inset-0 flex flex-col items-center justify-center text-center px-6 opacity-0 translate-y-10 pt-16 md:pt-0 ${activeStage === "maker" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
-            <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
-              CHAPTER III.V • THE MAKER
-            </span>
-            <h2 className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-semibold uppercase leading-snug max-w-3xl" style={{ color: 'var(--scene-text)' }}>
-              I DIDN&apos;T BUILD THIS BECAUSE I KNOW CAMERAS
-            </h2>
-            <p className="max-w-xl text-xs md:text-sm tracking-widest leading-relaxed mt-6" style={{ color: 'var(--scene-body)' }}>
-              I built it because I know how it feels — the second before you press the shutter. That half-breath. That instinct. That terror that the moment might slip past you. The Lens exists because some things are worth freezing forever.
-            </p>
+            {/* Soft radial scrim - kills 3D camera bleed-through */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.38) 60%, transparent 100%)' }} />
+            <div className="relative z-10 flex flex-col items-center">
+              <span className="text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase mb-4">
+                CHAPTER III.V &#x2022; THE MAKER
+              </span>
+              <h2
+                className="font-serif text-3xl md:text-5xl tracking-[0.15em] font-semibold uppercase leading-snug max-w-3xl"
+                style={{ color: 'var(--scene-text)', textShadow: '0 2px 32px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.5)' }}
+              >
+                I DIDN&apos;T BUILD THIS BECAUSE I KNOW CAMERAS
+              </h2>
+              <p
+                className="max-w-lg text-sm md:text-[15px] tracking-wide leading-[1.85] mt-6"
+                style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 12px rgba(0,0,0,0.95), 0 2px 24px rgba(0,0,0,0.7)' }}
+              >
+                I built it because I know how it feels &#x2014; the second before you press the shutter. That half-breath. That instinct. That terror that the moment might slip past you. The Lens exists because some things are worth freezing forever.
+              </p>
+            </div>
           </div>
 
           {/* SCENE 5: THE INTERACTIVE CAMERA GALLERY */}
