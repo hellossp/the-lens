@@ -776,21 +776,35 @@ export default function Home() {
           </div>
 
           {/* SCENE 6: THE LEGACY TEXT & PHOTO SPLIT LAYOUT */}
+          {/* SCENE 6: THE LEGACY TEXT & PHOTO SPLIT LAYOUT */}
           <div className={`text-scene-6 absolute inset-0 flex flex-col md:flex-row items-center justify-between pt-16 pb-6 md:py-12 px-6 md:px-8 opacity-0 translate-y-10 w-full max-w-6xl mx-auto ${activeStage === "legacy" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             {/* Left Column: Narrative Copy */}
-            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-3 md:space-y-4">
-              <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
-                CHAPTER V • THE PROMISE
-              </span>
-              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-semibold uppercase leading-snug" style={{ color: 'var(--scene-text)' }}>
-                YOUR LEGACY,<br />PRESERVED FOREVER
-              </h2>
-              <h3 className="font-serif text-lg md:text-2xl tracking-[0.2em] font-light text-gold-400 uppercase">
-                Freezing History in Silver &amp; Light.
-              </h3>
-              <p className="max-w-md text-[10px] md:text-sm tracking-widest leading-relaxed" style={{ color: 'var(--scene-body)' }}>
-                This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.
-              </p>
+            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-3 md:space-y-5 relative">
+              {/* Soft left-side scrim behind text */}
+              <div className="absolute -inset-6 md:-inset-10 pointer-events-none rounded-2xl" style={{ background: 'radial-gradient(ellipse 90% 80% at 30% 50%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 70%, transparent 100%)' }} />
+              <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left space-y-3 md:space-y-5">
+                <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
+                  CHAPTER V &#x2022; THE PROMISE
+                </span>
+                <h2
+                  className="font-serif text-2xl md:text-5xl tracking-[0.12em] font-semibold uppercase leading-snug"
+                  style={{ color: 'var(--scene-text)', textShadow: '0 2px 24px rgba(0,0,0,0.7), 0 0 48px rgba(0,0,0,0.4)' }}
+                >
+                  YOUR LEGACY,<br />PRESERVED FOREVER
+                </h2>
+                <h3
+                  className="font-serif text-lg md:text-2xl tracking-[0.18em] font-light text-gold-400 uppercase"
+                  style={{ textShadow: '0 1px 16px rgba(0,0,0,0.6)' }}
+                >
+                  Freezing History in Silver &#x26; Light.
+                </h3>
+                <p
+                  className="max-w-md text-sm md:text-[15px] tracking-wide leading-[1.85]"
+                  style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 10px rgba(0,0,0,0.95), 0 2px 20px rgba(0,0,0,0.7)' }}
+                >
+                  This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.
+                </p>
+              </div>
             </div>
 
             {/* Right Column: High-Fidelity Legacy Photograph Frame */}
