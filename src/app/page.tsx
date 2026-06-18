@@ -589,7 +589,7 @@ export default function Home() {
                 ].map((service, idx) => (
                   <div
                     key={idx}
-                    className={`service-card-${idx} absolute inset-0 flex flex-col justify-between p-4 md:p-6 rounded-xl border border-white/10 bg-zinc-950/80 shadow-2xl glass w-full h-full transition-all duration-300 ${
+                    className={`service-card-${idx} absolute inset-0 flex flex-col justify-between p-4 md:p-6 rounded-xl border border-white/[0.12] bg-zinc-950/95 backdrop-blur-md shadow-2xl w-full h-full transition-all duration-300 ${
                       activeServiceIdx === idx && activeStage === "services"
                         ? "opacity-100 scale-100 pointer-events-auto z-10"
                         : "opacity-0 scale-95 pointer-events-none z-0"
@@ -598,13 +598,13 @@ export default function Home() {
                     <div className="flex-1 flex flex-row gap-3 md:gap-4 overflow-hidden h-full">
                       {/* Card Left: Details Copy */}
                       <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-3">
-                        <span className="text-[7px] md:text-[8px] font-mono tracking-[0.3em] text-gold-400 uppercase">
+                        <span className="text-[7px] md:text-[9px] font-mono tracking-[0.3em] text-gold-400 uppercase">
                           CAPABILITY {idx + 1} / 08
                         </span>
-                        <h3 className="font-serif text-[11px] md:text-base font-bold tracking-wide text-white uppercase leading-tight">
+                        <h3 className="font-serif text-sm md:text-lg font-bold tracking-wide text-white uppercase leading-tight">
                           {service.title}
                         </h3>
-                        <p className="text-[9px] md:text-xs tracking-wider text-white/50 leading-relaxed max-h-[80px] md:max-h-none overflow-y-auto no-scrollbar">
+                        <p className="text-[10px] md:text-[13px] tracking-wide text-white/75 leading-relaxed max-h-[80px] md:max-h-none overflow-y-auto no-scrollbar">
                           {service.description}
                         </p>
 
