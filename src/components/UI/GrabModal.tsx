@@ -166,7 +166,7 @@ export default function GrabModal() {
           onClick={handleBackdropClick}
           className="grab-modal-overlay"
         >
-          <div className="grab-modal">
+          <div className="grab-modal" data-lenis-prevent>
             {/* Close button */}
             <button
               onClick={handleClose}
@@ -193,8 +193,8 @@ export default function GrabModal() {
             {!submitted ? (
               <form onSubmit={handleSubmit} className="grab-modal-form">
 
-                {/* Row 1: Full Name + Email */}
-                <div className="grab-form-row">
+                {/* 3-column compact grid: Name | Email | Phone */}
+                <div className="grab-form-row grab-form-row--3">
                   <div className="grab-form-field">
                     <label htmlFor="grab-name">Full Name *</label>
                     <input
@@ -202,7 +202,7 @@ export default function GrabModal() {
                       name="name"
                       type="text"
                       required
-                      placeholder="e.g. Alex Sharma"
+                      placeholder="Alex Sharma"
                       value={form.name}
                       onChange={handleChange}
                       disabled={submitting}
@@ -221,12 +221,8 @@ export default function GrabModal() {
                       disabled={submitting}
                     />
                   </div>
-                </div>
-
-                {/* Row 2: Phone + Country */}
-                <div className="grab-form-row">
                   <div className="grab-form-field">
-                    <label htmlFor="grab-phone">Phone Number <span className="grab-optional">(optional)</span></label>
+                    <label htmlFor="grab-phone">Phone <span className="grab-optional">(opt.)</span></label>
                     <input
                       id="grab-phone"
                       name="phone"
@@ -237,6 +233,10 @@ export default function GrabModal() {
                       disabled={submitting}
                     />
                   </div>
+                </div>
+
+                {/* 3-column: Country | Studio | Website */}
+                <div className="grab-form-row grab-form-row--3">
                   <div className="grab-form-field">
                     <label htmlFor="grab-country">Country *</label>
                     <div className="grab-select-wrapper">
@@ -248,7 +248,7 @@ export default function GrabModal() {
                         onChange={handleChange}
                         disabled={submitting}
                       >
-                        <option value="">Select your country</option>
+                        <option value="">Select country</option>
                         {COUNTRIES.map((c) => (
                           <option key={c} value={c}>{c}</option>
                         ))}
@@ -256,24 +256,20 @@ export default function GrabModal() {
                       <ChevronDown className="grab-select-icon w-3.5 h-3.5" />
                     </div>
                   </div>
-                </div>
-
-                {/* Row 3: Studio + Website */}
-                <div className="grab-form-row">
                   <div className="grab-form-field">
-                    <label htmlFor="grab-studio">Business / Studio Name</label>
+                    <label htmlFor="grab-studio">Studio / Business Name</label>
                     <input
                       id="grab-studio"
                       name="studio"
                       type="text"
-                      placeholder="e.g. Golden Frame Co."
+                      placeholder="Golden Frame Co."
                       value={form.studio}
                       onChange={handleChange}
                       disabled={submitting}
                     />
                   </div>
                   <div className="grab-form-field">
-                    <label htmlFor="grab-website">Website URL <span className="grab-optional">(optional)</span></label>
+                    <label htmlFor="grab-website">Website <span className="grab-optional">(opt.)</span></label>
                     <input
                       id="grab-website"
                       name="website"
@@ -286,7 +282,7 @@ export default function GrabModal() {
                   </div>
                 </div>
 
-                {/* Row 4: Instagram (full width) */}
+                {/* Instagram full-width */}
                 <div className="grab-form-field grab-form-field--full">
                   <label htmlFor="grab-instagram">Instagram Profile *</label>
                   <div className="grab-instagram-wrapper">
