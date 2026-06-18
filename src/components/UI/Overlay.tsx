@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Camera, Sun, Moon } from "lucide-react";
+import { Camera } from "lucide-react";
 import gsap from "gsap";
 
 const STAGES = [
@@ -18,19 +18,8 @@ const STAGES = [
 export default function Overlay() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeStage, setActiveStage] = useState("lens");
-  const [isDark, setIsDark] = useState(true);
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const fadedOutRef = useRef(false);
-
-  // Sync theme attribute to html element
-  useEffect(() => {
-    const html = document.documentElement;
-    if (isDark) {
-      html.removeAttribute("data-theme");
-    } else {
-      html.setAttribute("data-theme", "light");
-    }
-  }, [isDark]);
 
   useEffect(() => {
     // Check initial scroll on mount
@@ -98,20 +87,20 @@ export default function Overlay() {
   // Compute dynamic stats based on scroll progress
   const getISO = () => {
     if (scrollProgress < 0.14) return 100;
-    if (scrollProgress < 0.28) return 800; // Entering dark light scene
+    if (scrollProgress < 0.28) return 800;
     if (scrollProgress < 0.44) return 400;
-    if (scrollProgress < 0.58) return 100; // Capabilities dial
+    if (scrollProgress < 0.58) return 100;
     return 100;
   };
 
   const getAperture = () => {
     if (scrollProgress < 0.14) return "f/8.0";
-    if (scrollProgress < 0.28) return "f/1.2"; // Wide open for light rays
-    if (scrollProgress < 0.44) return "f/2.8"; // Internal elements depth
-    if (scrollProgress < 0.58) return "f/5.6"; // Capabilities dial
-    if (scrollProgress < 0.66) return "f/2.0"; // The Maker
-    if (scrollProgress < 0.80) return "f/4.0"; // Gallery
-    return "f/16"; // Closing down
+    if (scrollProgress < 0.28) return "f/1.2";
+    if (scrollProgress < 0.44) return "f/2.8";
+    if (scrollProgress < 0.58) return "f/5.6";
+    if (scrollProgress < 0.66) return "f/2.0";
+    if (scrollProgress < 0.80) return "f/4.0";
+    return "f/16";
   };
 
   const getShutter = () => {
@@ -120,40 +109,26 @@ export default function Overlay() {
     return "1/125";
   };
 
-  // Colors adapt to theme
-  const hudBorderColor = isDark ? "border-white/20" : "border-black/15";
-  const navDotInactive = isDark ? "bg-white/20 group-hover:bg-white/50" : "bg-black/20 group-hover:bg-black/50";
-  const navLabelInactive = isDark ? "text-white/30 group-hover:opacity-60" : "text-black/30 group-hover:opacity-60";
-  const progressBg = isDark ? "bg-white/10" : "bg-black/10";
-  const scrollCueColor = isDark ? "text-white/40" : "text-black/40";
-  const scrollCueBarColor = isDark ? "bg-white/30" : "bg-black/30";
-  const metadataColor = isDark ? "text-white/60" : "text-black/50";
-  const metaLabelColor = isDark ? "text-white/30" : "text-black/30";
-  const metaValueColor = isDark ? "text-white" : "text-black";
-  const recColor = isDark ? "text-white/80" : "text-black/70";
-  const brandColor = isDark ? "text-white" : "text-[#1a1209]";
-  const headerSubColor = isDark ? "text-white/50" : "text-black/40";
-
   return (
     <div className="fixed inset-0 pointer-events-none z-40 select-none font-sans">
       {/* Viewfinder Crop Marks - Four Corners */}
-      <div className={`absolute top-4 left-4 md:top-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-t border-l ${hudBorderColor}`} />
-      <div className={`absolute top-4 right-4 md:top-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-t border-r ${hudBorderColor}`} />
-      <div className={`absolute bottom-4 left-4 md:bottom-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-b border-l ${hudBorderColor}`} />
-      <div className={`absolute bottom-4 right-4 md:bottom-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-b border-r ${hudBorderColor}`} />
+      <div className="absolute top-4 left-4 md:top-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-t border-l border-white/20" />
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-t border-r border-white/20" />
+      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-b border-l border-white/20" />
+      <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-b border-r border-white/20" />
 
       {/* Viewfinder Grid Dots */}
-      <div className={`absolute top-1/2 left-4 md:left-8 -translate-y-1/2 w-1.5 h-0.5 ${isDark ? "bg-white/10" : "bg-black/10"}`} />
-      <div className={`absolute top-1/2 right-4 md:right-8 -translate-y-1/2 w-1.5 h-0.5 ${isDark ? "bg-white/10" : "bg-black/10"}`} />
-      <div className={`absolute left-1/2 top-4 md:top-8 -translate-x-1/2 w-0.5 h-1.5 ${isDark ? "bg-white/10" : "bg-black/10"}`} />
-      <div className={`absolute left-1/2 bottom-4 md:bottom-8 -translate-x-1/2 w-0.5 h-1.5 ${isDark ? "bg-white/10" : "bg-black/10"}`} />
+      <div className="absolute top-1/2 left-4 md:left-8 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
+      <div className="absolute top-1/2 right-4 md:right-8 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
+      <div className="absolute left-1/2 top-4 md:top-8 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
+      <div className="absolute left-1/2 bottom-4 md:bottom-8 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
 
       {/* Viewfinder Center Autofocus Brackets */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-between w-20 h-20 md:w-24 md:h-24 pointer-events-none">
         <div className={`w-2 h-6 md:w-3 md:h-8 border-t border-b border-l transition-all duration-500 ${
           activeStage === "focus"
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-            : `${isDark ? "border-white/15" : "border-black/15"} scale-100`
+            : "border-white/15 scale-100"
         }`} />
         <div className="hud-locked-text text-[8px] md:text-[9px] text-emerald-500/80 font-mono tracking-widest absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 select-none pointer-events-none">
           LOCKED
@@ -161,7 +136,7 @@ export default function Overlay() {
         <div className={`w-2 h-6 md:w-3 md:h-8 border-t border-b border-r transition-all duration-500 ${
           activeStage === "focus"
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-            : `${isDark ? "border-white/15" : "border-black/15"} scale-100`
+            : "border-white/15 scale-100"
         }`} />
       </div>
 
@@ -169,52 +144,39 @@ export default function Overlay() {
       <header className="absolute top-4 left-4 right-4 md:top-8 md:left-8 md:right-8 flex justify-between items-center pointer-events-auto">
         <div className="flex items-center space-x-2">
           <Camera className="w-4.5 h-4.5 md:w-5 md:h-5 text-gold-400" />
-          <span className={`font-serif text-base md:text-lg tracking-[0.25em] font-semibold ${brandColor}`}>
+          <span className="font-serif text-base md:text-lg tracking-[0.25em] font-semibold text-white">
             THE LENS
           </span>
         </div>
         <div className="flex items-center space-x-3 md:space-x-4">
-          <div className={`flex items-center space-x-4 md:space-x-6 text-[9px] md:text-[10px] tracking-[0.2em] font-medium ${headerSubColor}`}>
+          <div className="flex items-center space-x-4 md:space-x-6 text-[9px] md:text-[10px] tracking-[0.2em] font-medium text-white/50">
             <span className="hidden md:inline">50MM F1.2 LENSE JOURNEY</span>
-            <span className={recColor}>REC [●]</span>
+            <span className="text-white/80">REC [●]</span>
           </div>
-          {/* Theme Toggle */}
-          <button
-            id="theme-toggle"
-            aria-label="Toggle theme"
-            onClick={() => setIsDark((prev) => !prev)}
-            className="theme-toggle-btn pointer-events-auto"
-          >
-            {isDark ? (
-              <Sun className="w-3.5 h-3.5" />
-            ) : (
-              <Moon className="w-3.5 h-3.5" />
-            )}
-          </button>
         </div>
       </header>
 
       {/* Left Metadata Panel (ISO, Aperture, Shutter Speed) */}
-      <div className={`absolute bottom-4 left-4 md:bottom-8 md:left-8 flex flex-row md:flex-col space-x-4 md:space-x-0 md:space-y-4 font-mono text-[9px] md:text-[11px] ${metadataColor}`}>
+      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 flex flex-row md:flex-col space-x-4 md:space-x-0 md:space-y-4 font-mono text-[9px] md:text-[11px] text-white/60">
         <div className="flex flex-col">
-          <span className={`text-[7px] md:text-[9px] tracking-wider ${metaLabelColor}`}>FOCAL</span>
-          <span className={`font-medium tracking-wide ${metaValueColor}`}>50mm</span>
+          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">FOCAL</span>
+          <span className="font-medium tracking-wide text-white">50mm</span>
         </div>
         <div className="flex flex-col">
-          <span className={`text-[7px] md:text-[9px] tracking-wider ${metaLabelColor}`}>APERTURE</span>
+          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">APERTURE</span>
           <span className="text-gold-400 font-medium tracking-wide transition-all duration-300">
             {getAperture()}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className={`text-[7px] md:text-[9px] tracking-wider ${metaLabelColor}`}>SHUTTER</span>
-          <span className={`font-medium tracking-wide transition-all duration-300 ${metaValueColor}`}>
+          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">SHUTTER</span>
+          <span className="font-medium tracking-wide transition-all duration-300 text-white">
             {getShutter()}s
           </span>
         </div>
         <div className="flex flex-col">
-          <span className={`text-[7px] md:text-[9px] tracking-wider ${metaLabelColor}`}>ISO</span>
-          <span className={`font-medium tracking-wide transition-all duration-300 ${metaValueColor}`}>
+          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">ISO</span>
+          <span className="font-medium tracking-wide transition-all duration-300 text-white">
             {getISO()}
           </span>
         </div>
@@ -250,7 +212,7 @@ export default function Overlay() {
                 className={`hidden md:inline-block text-[10px] tracking-[0.25em] font-medium transition-all duration-300 text-right ${
                   isActive
                     ? "text-gold-400 font-bold opacity-100 translate-x-0"
-                    : `${navLabelInactive} opacity-0 translate-x-2`
+                    : "text-white/30 group-hover:opacity-60 opacity-0 translate-x-2"
                 }`}
               >
                 {stage.label}
@@ -260,7 +222,7 @@ export default function Overlay() {
                   className={`absolute rounded-full transition-all duration-500 ${
                     isActive
                       ? "w-2 md:w-2.5 h-2 md:h-2.5 bg-gold-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
-                      : `w-1 h-1 ${navDotInactive}`
+                      : "w-1 h-1 bg-white/20 group-hover:bg-white/50"
                   }`}
                 />
               </div>
@@ -275,10 +237,10 @@ export default function Overlay() {
           ref={scrollCueRef}
           className="flex flex-col items-center space-y-0.5 animate-bounce"
         >
-          <span className={`text-[8px] md:text-[9px] tracking-[0.3em] ${scrollCueColor}`}>SCROLL TO TRAVEL</span>
-          <div className={`w-0.5 h-3 md:h-4 ${scrollCueBarColor}`} />
+          <span className="text-[8px] md:text-[9px] tracking-[0.3em] text-white/40">SCROLL TO TRAVEL</span>
+          <div className="w-0.5 h-3 md:h-4 bg-white/30" />
         </div>
-        <div className={`w-36 md:w-48 h-[1px] ${progressBg} rounded-full overflow-hidden relative`}>
+        <div className="w-36 md:w-48 h-[1px] bg-white/10 rounded-full overflow-hidden relative">
           <div
             className="absolute h-full left-0 top-0 bg-gold-400 transition-all duration-100 ease-out"
             style={{ width: `${scrollProgress * 100}%` }}

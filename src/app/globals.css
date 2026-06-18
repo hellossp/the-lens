@@ -27,8 +27,8 @@
   --input-bg: rgba(255, 255, 255, 0.05);
   --input-border: rgba(255, 255, 255, 0.10);
   --scene-label: rgba(252, 211, 77, 1); /* gold-400 */
-  --scene-text: rgba(244, 244, 245, 1);
-  --scene-body: rgba(255, 255, 255, 0.45);
+  --scene-text: rgba(255, 255, 255, 1);
+  --scene-body: rgba(255, 255, 255, 0.68);
 }
 
 /* Light theme overrides */
@@ -329,34 +329,35 @@ html.lenis body {
   font-weight: 700;
   text-transform: uppercase;
   line-height: 1.1;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   color: var(--scene-text);
   /* Bounded: won't exceed 3rem (48px) no matter the viewport */
-  font-size: clamp(1.75rem, 3.2vw, 3rem);
+  font-size: clamp(1.85rem, 3.4vw, 3.2rem);
   margin-bottom: 0.7rem;
   flex-shrink: 0;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.5);
 }
 
 /* Camera spec echo — small monospace line that bridges HUD ↔ narrative text */
 .scene-spec-echo {
   font-family: var(--font-inter), monospace;
-  font-size: 8.5px;
+  font-size: 9px;
   letter-spacing: 0.22em;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   color: var(--scene-text);
-  opacity: 0.22;
+  opacity: 0.38;
   margin-bottom: 0.6rem;
   flex-shrink: 0;
 }
 
 /* Body copy — right below the heading, readable size */
 .scene-body {
-  font-size: 12.5px;
-  line-height: 1.72;
-  letter-spacing: 0.02em;
+  font-size: 14px;
+  line-height: 1.78;
+  letter-spacing: 0.015em;
   color: var(--scene-body);
-  max-width: 44ch;
+  max-width: 46ch;
   flex-shrink: 0;
 }
 
@@ -378,12 +379,12 @@ html.lenis body {
   }
 
   .scene-heading {
-    font-size: clamp(1.5rem, 7vw, 2.2rem);
+    font-size: clamp(1.55rem, 7vw, 2.3rem);
   }
 
   .scene-body {
     max-width: none;
-    font-size: 12px;
+    font-size: 13.5px;
   }
 }
 
@@ -398,29 +399,7 @@ html.lenis body {
   --lower-third-end: rgba(242, 236, 224, 0.92);
 }
 
-/* -----------------------------------------------
-   THEME TOGGLE BUTTON
-   ----------------------------------------------- */
-.theme-toggle-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--panel-border);
-  background: var(--surface);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-}
-
-.theme-toggle-btn:hover {
-  border-color: #fbbf24;
-  color: #fbbf24;
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
-}
+/* theme-toggle-btn removed — site is dark-only */
 
 /* -----------------------------------------------
    LIGHT THEME — SPECIFIC COMPONENT OVERRIDES
