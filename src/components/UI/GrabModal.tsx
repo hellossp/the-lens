@@ -166,8 +166,8 @@ export default function GrabModal() {
           onClick={handleBackdropClick}
           className="grab-modal-overlay"
         >
-          <div className="grab-modal" data-lenis-prevent>
-            {/* Close button */}
+          <div className="grab-modal">
+            {/* Close button — outside scroll wrapper so it stays pinned */}
             <button
               onClick={handleClose}
               className="grab-modal-close"
@@ -176,6 +176,7 @@ export default function GrabModal() {
               <X className="w-4 h-4" />
             </button>
 
+            <div className="grab-modal-scroll" data-lenis-prevent>
             {/* Header */}
             <div className="grab-modal-header">
               <div className="grab-modal-badge">
@@ -365,6 +366,7 @@ export default function GrabModal() {
                 </button>
               </div>
             )}
+            </div>{/* end grab-modal-scroll */}
           </div>
         </div>
       )}
