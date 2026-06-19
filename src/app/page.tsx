@@ -380,10 +380,10 @@ export default function Home() {
           </div>
 
           {/* SCENE 4: CAPABILITIES / SERVICES INTERACTIVE MODE DIAL */}
-          <div className={`text-scene-services absolute inset-0 flex items-center justify-center px-6 md:px-12 opacity-0 translate-y-10 z-20 w-full max-w-6xl mx-auto pt-16 md:pt-0 ${activeStage === "services" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center w-full max-h-[85vh] overflow-hidden">
+          <div className={`text-scene-services absolute inset-0 flex items-start md:items-center justify-center px-3 md:px-12 opacity-0 translate-y-10 z-20 w-full max-w-6xl mx-auto pt-14 md:pt-0 overflow-y-auto md:overflow-hidden ${activeStage === "services" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: "none" }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-center w-full md:max-h-[85vh]">
               {/* Left Column: Camera Mode Dial Panel */}
-              <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4 select-none">
+              <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4 select-none">
                 {/* HUD LCD Viewfinder Panel */}
                 <div className="lcd-display-hud glass w-full max-w-[240px] md:max-w-[280px] p-2.5 md:p-3 rounded-lg border border-white/10 relative overflow-hidden bg-black/60 shadow-[inset_0_0_10px_rgba(0,0,0,0.8)]">
                   {/* Technical yellow accent line */}
@@ -537,7 +537,7 @@ export default function Home() {
               </div>
 
               {/* Right Side: Service Details Cards */}
-              <div className="relative h-[280px] md:h-[320px] flex items-center justify-center w-full">
+              <div className="relative h-[260px] sm:h-[300px] md:h-[320px] flex items-center justify-center w-full">
                 {[
                   {
                     title: "Weddings & Intimate Elopements",
@@ -619,7 +619,7 @@ export default function Home() {
                       </div>
 
                       {/* Card Right: Media visual or Form */}
-                      <div className="w-[85px] md:w-[130px] shrink-0 h-full relative rounded-lg overflow-hidden border border-white/5 bg-black/40 flex items-center justify-center">
+                      <div className="w-[80px] sm:w-[100px] md:w-[130px] shrink-0 h-full relative rounded-lg overflow-hidden border border-white/5 bg-black/40 flex items-center justify-center">
                         {service.isOtherForm ? (
                           <div className="w-full p-1.5 md:p-2 flex flex-col justify-between h-full space-y-1.5 md:space-y-2">
                             <textarea

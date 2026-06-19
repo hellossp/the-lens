@@ -156,34 +156,44 @@ export default function Overlay() {
         </div>
       </header>
 
-      {/* Left Metadata Panel (ISO, Aperture, Shutter Speed) */}
-      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 flex flex-row md:flex-col space-x-4 md:space-x-0 md:space-y-4 font-mono text-[9px] md:text-[11px] text-white/60">
+      {/* Left Metadata Panel — hidden on mobile to avoid overlap with CTA */}
+      <div className="hidden md:flex absolute bottom-8 left-8 flex-col space-y-4 font-mono text-[11px] text-white/60">
         <div className="flex flex-col">
-          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">FOCAL</span>
+          <span className="text-[9px] tracking-wider text-white/30">FOCAL</span>
           <span className="font-medium tracking-wide text-white">50mm</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">APERTURE</span>
+          <span className="text-[9px] tracking-wider text-white/30">APERTURE</span>
           <span className="text-gold-400 font-medium tracking-wide transition-all duration-300">
             {getAperture()}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">SHUTTER</span>
+          <span className="text-[9px] tracking-wider text-white/30">SHUTTER</span>
           <span className="font-medium tracking-wide transition-all duration-300 text-white">
             {getShutter()}s
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[7px] md:text-[9px] tracking-wider text-white/30">ISO</span>
+          <span className="text-[9px] tracking-wider text-white/30">ISO</span>
           <span className="font-medium tracking-wide transition-all duration-300 text-white">
             {getISO()}
           </span>
         </div>
       </div>
 
+      {/* Mobile-only compact camera spec strip */}
+      <div className="md:hidden absolute bottom-4 left-4 flex items-center gap-2 font-mono text-[8px] text-white/35">
+        <span className="text-gold-400/70">{getAperture()}</span>
+        <span className="text-white/20">·</span>
+        <span>{getShutter()}s</span>
+        <span className="text-white/20">·</span>
+        <span>ISO {getISO()}</span>
+      </div>
+
+
       {/* Right Stage Navigation */}
-      <nav className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex flex-col space-y-4 md:space-y-6">
+      <nav className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 flex flex-col space-y-3 md:space-y-6">
         {STAGES.map((stage) => {
           const isActive = activeStage === stage.id;
           return (
@@ -232,12 +242,12 @@ export default function Overlay() {
       </nav>
 
       {/* Bottom Progress Bar & Scroll Indicator */}
-      <footer className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 md:space-y-3">
+      <footer className="absolute bottom-12 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 md:space-y-3">
         <div
           ref={scrollCueRef}
           className="flex flex-col items-center space-y-0.5 animate-bounce"
         >
-          <span className="text-[8px] md:text-[9px] tracking-[0.3em] text-white/40">SCROLL TO TRAVEL</span>
+          <span className="hidden sm:inline text-[8px] md:text-[9px] tracking-[0.3em] text-white/40">SCROLL TO TRAVEL</span>
           <div className="w-0.5 h-3 md:h-4 bg-white/30" />
         </div>
         <div className="w-36 md:w-48 h-[1px] bg-white/10 rounded-full overflow-hidden relative">

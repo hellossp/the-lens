@@ -268,22 +268,19 @@ html.lenis body {
   bottom: 0;
   left: 0;
   right: 0;
-  /* Steeper gradient so it's clearly separate from the 3D area */
   background: linear-gradient(
     to bottom,
     transparent 0%,
     var(--lower-third-start) 18%,
     var(--lower-third-end) 44%
   );
-  /* Generous left pad — always clears the left HUD (ISO/APERTURE/SHUTTER) */
-  /* clamp: min 88px (HUD width), scales with viewport, max 160px */
+  /* Desktop: clears left HUD panel */
   padding: 0 clamp(2rem, 5vw, 4rem) 3.5rem clamp(88px, 16vw, 160px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  /* Max height so content stays in lower band, never bleeds into 3D zone */
-  max-height: 44%;
+  max-height: 52%;
   pointer-events: none;
   box-sizing: border-box;
 }
@@ -364,14 +361,15 @@ html.lenis body {
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .scene-lower-third {
-    padding: 0 1.5rem 5.5rem 1.5rem; /* no HUD clearance needed — HUD is smaller on mobile */
-    max-height: 48%;
+    /* On mobile: reduce left pad (no wide left HUD), use full width */
+    padding: 0 1.25rem 4.5rem 1.25rem;
+    max-height: 55%;
   }
 
   .scene-lower-third.align-right {
     align-items: flex-start;
     text-align: left;
-    padding: 0 1.5rem 5.5rem 1.5rem;
+    padding: 0 1.25rem 4.5rem 1.25rem;
   }
 
   .scene-lower-third.align-right::before {
@@ -385,6 +383,11 @@ html.lenis body {
   .scene-body {
     max-width: none;
     font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  .scene-spec-echo {
+    display: none; /* hide tiny tech text on mobile for clarity */
   }
 }
 
