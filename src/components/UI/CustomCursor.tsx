@@ -9,7 +9,14 @@ export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [hidden, setHidden] = useState(true);
 
+  const [isTouch, setIsTouch] = useState(false);
+
   useEffect(() => {
+    // Detect touch-only/mobile devices and disable custom cursor
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    setIsTouch(isTouchDevice);
+    if (isTouchDevice) return;
+
     const cursorDot = cursorDotRef.current;
     const cursorRing = cursorRingRef.current;
     if (!cursorDot || !cursorRing) return;
@@ -65,6 +72,8 @@ export default function CustomCursor() {
       observer.disconnect();
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <>

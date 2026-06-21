@@ -123,17 +123,17 @@ export default function Overlay() {
       <div className="absolute left-1/2 top-4 md:top-8 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
       <div className="absolute left-1/2 bottom-4 md:bottom-8 -translate-x-1/2 w-0.5 h-1.5 bg-white/10" />
 
-      {/* Viewfinder Center Autofocus Brackets */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-between w-20 h-20 md:w-24 md:h-24 pointer-events-none">
-        <div className={`w-2 h-6 md:w-3 md:h-8 border-t border-b border-l transition-all duration-500 ${
+      {/* Viewfinder Center Autofocus Brackets — hidden on mobile to avoid overlapping centered content */}
+      <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-between w-24 h-24 pointer-events-none">
+        <div className={`w-3 h-8 border-t border-b border-l transition-all duration-500 ${
           activeStage === "focus"
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
             : "border-white/15 scale-100"
         }`} />
-        <div className="hud-locked-text text-[8px] md:text-[9px] text-emerald-500/80 font-mono tracking-widest absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 select-none pointer-events-none">
+        <div className="hud-locked-text text-[9px] text-emerald-500/80 font-mono tracking-widest absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 select-none pointer-events-none">
           LOCKED
         </div>
-        <div className={`w-2 h-6 md:w-3 md:h-8 border-t border-b border-r transition-all duration-500 ${
+        <div className={`w-3 h-8 border-t border-b border-r transition-all duration-500 ${
           activeStage === "focus"
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
             : "border-white/15 scale-100"
@@ -182,14 +182,7 @@ export default function Overlay() {
         </div>
       </div>
 
-      {/* Mobile-only compact camera spec strip */}
-      <div className="md:hidden absolute bottom-4 left-4 flex items-center gap-2 font-mono text-[8px] text-white/35">
-        <span className="text-gold-400/70">{getAperture()}</span>
-        <span className="text-white/20">·</span>
-        <span>{getShutter()}s</span>
-        <span className="text-white/20">·</span>
-        <span>ISO {getISO()}</span>
-      </div>
+      {/* Mobile-only compact camera spec strip removed to prevent layout overlap */}
 
 
       {/* Right Stage Navigation */}
