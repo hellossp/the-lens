@@ -680,26 +680,27 @@ export default function Home() {
           </div>
 
           {/* SCENE 5: THE INTERACTIVE CAMERA GALLERY */}
-          <div className={`text-scene-5 absolute inset-0 flex flex-col justify-between pt-16 pb-8 md:py-10 px-6 opacity-0 translate-y-10 w-full max-w-6xl mx-auto z-30 ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-5 absolute inset-0 flex flex-col justify-start md:justify-between pt-14 md:pt-16 pb-4 md:pb-10 px-4 md:px-6 gap-3 md:gap-0 opacity-0 translate-y-10 w-full max-w-6xl mx-auto z-30 ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             {/* Top Area: Header and release shutter button */}
-            <div className="text-center space-y-2 md:space-y-2.5 z-20 max-w-xl mx-auto mt-4 px-4">
+            <div className="text-center space-y-1.5 md:space-y-2.5 z-20 max-w-xl mx-auto mt-0 md:mt-4 px-2 md:px-4">
               <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
                 CHAPTER IV • THE SHUTTER
               </span>
-              <h2 className="font-serif text-2xl md:text-5xl tracking-[0.15em] font-bold uppercase leading-none" style={{ color: 'var(--scene-text)' }}>
+              <h2 className="font-serif text-[1.7rem] md:text-5xl tracking-[0.12em] font-bold uppercase leading-none" style={{ color: 'var(--scene-text)', textShadow: '0 2px 16px rgba(0,0,0,0.7)' }}>
                 FREEZE A MOMENT
               </h2>
-              <p className="text-[9px] md:text-[11px] tracking-widest leading-relaxed max-w-md mx-auto pt-1" style={{ color: 'var(--scene-body)' }}>
-                This is where time stands still. Click directly on the 3D camera lens or trigger the physical shutter button below to snap real-time photos and unlock our session portfolio.
+              <p className="text-[11px] md:text-[11px] tracking-wide leading-relaxed max-w-md mx-auto pt-1" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                <span className="hidden md:inline">This is where time stands still. Click directly on the 3D camera lens or trigger the physical shutter button below to snap real-time photos and unlock our session portfolio.</span>
+                <span className="md:hidden">Tap the 3D lens or release the shutter below to snap photos and unlock our session portfolio.</span>
               </p>
 
               <div className="flex flex-col items-center space-y-2 md:space-y-3 pt-1 md:pt-2">
-                <div className={`flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 z-30 relative w-full max-w-[280px] sm:max-w-none ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`}>
+                <div className={`flex flex-row items-center justify-center gap-2.5 md:gap-4 z-30 relative w-full max-w-md sm:max-w-none ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`}>
                   <button
                     onClick={triggerShutter}
-                    className="w-full sm:w-auto relative overflow-visible z-50 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black px-6 md:px-8 py-2.5 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono font-bold tracking-[0.25em] flex items-center justify-center space-x-2 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.35)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
+                    className="w-1/2 sm:w-auto relative overflow-visible z-50 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black px-3.5 md:px-8 py-2.5 md:py-3 rounded-full text-[8.5px] md:text-[10px] font-mono font-bold tracking-[0.15em] md:tracking-[0.25em] flex items-center justify-center space-x-1 md:space-x-2 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.35)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
                   >
-                    <Camera className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    <Camera className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
                     <span>RELEASE SHUTTER</span>
                   </button>
 
@@ -713,7 +714,7 @@ export default function Home() {
                         });
                       }
                     }}
-                    className="w-full sm:w-auto relative overflow-visible z-50 border border-white/20 hover:border-gold-500/80 bg-zinc-950/60 hover:bg-zinc-900/60 text-white/80 hover:text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono font-bold tracking-[0.25em] transition-all hover:scale-105 active:scale-95 shadow-[0_4px_15px_rgba(0,0,0,0.5)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
+                    className="w-1/2 sm:w-auto relative overflow-visible z-50 border border-white/20 hover:border-gold-500/80 bg-zinc-950/60 hover:bg-zinc-900/60 text-white/80 hover:text-white px-3.5 md:px-8 py-2.5 md:py-3 rounded-full text-[8.5px] md:text-[10px] font-mono font-bold tracking-[0.15em] md:tracking-[0.25em] transition-all hover:scale-105 active:scale-95 shadow-[0_4px_15px_rgba(0,0,0,0.5)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
                   >
                     <span>EXPLORE ALL WORK</span>
                   </button>
@@ -726,7 +727,7 @@ export default function Home() {
             </div>
 
             {/* Bottom Area: Photo deck grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full z-20 max-h-[32vh] overflow-y-auto no-scrollbar mb-16 md:mb-20">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-4 w-full z-20 max-h-[42vh] md:max-h-[32vh] overflow-y-auto no-scrollbar mb-0 md:mb-20">
               {PHOTO_POOL.map((photo, index) => {
                 const isUnlocked = unlockedPhotos.some((p) => p.id === photo.id);
                 return (
@@ -734,7 +735,7 @@ export default function Home() {
                     key={photo.id}
                     className={`relative aspect-[4/3] rounded-lg overflow-hidden border transition-all duration-500 ${isUnlocked
                         ? "border-white/10 bg-zinc-950/40 hover:border-gold-500/80 shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
-                        : "border-dashed border-white/10 bg-black/40 flex flex-col items-center justify-center"
+                        : "border-dashed border-white/10 bg-black/40 skeleton-shimmer flex flex-col items-center justify-center"
                       }`}
                   >
                     {isUnlocked ? (
@@ -764,8 +765,9 @@ export default function Home() {
                         <div className="text-[9px] font-mono tracking-widest text-white/30 uppercase">
                           SLOT {index + 1}
                         </div>
-                        <div className="text-[8px] text-white/20 tracking-wider">
-                          CLICK CAMERA TO SNAP
+                        <div className="text-[8px] text-white/25 tracking-wider font-mono">
+                          <span className="hidden md:inline">CLICK CAMERA TO SNAP</span>
+                          <span className="md:hidden">TAP LENS TO SNAP</span>
                         </div>
                       </div>
                     )}
@@ -776,18 +778,17 @@ export default function Home() {
           </div>
 
           {/* SCENE 6: THE LEGACY TEXT & PHOTO SPLIT LAYOUT */}
-          {/* SCENE 6: THE LEGACY TEXT & PHOTO SPLIT LAYOUT */}
-          <div className={`text-scene-6 absolute inset-0 flex flex-col md:flex-row items-center justify-between pt-16 pb-6 md:py-12 px-6 md:px-8 opacity-0 translate-y-10 w-full max-w-6xl mx-auto ${activeStage === "legacy" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
+          <div className={`text-scene-6 absolute inset-0 flex flex-col md:flex-row items-center md:items-center justify-start md:justify-between pt-14 md:pt-12 pb-6 md:py-12 px-5 md:px-8 gap-4 md:gap-0 overflow-y-auto md:overflow-hidden opacity-0 translate-y-10 w-full max-w-6xl mx-auto ${activeStage === "legacy" ? "pointer-events-auto" : "pointer-events-none"}`} style={{ display: 'none' }}>
             {/* Left Column: Narrative Copy */}
-            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-3 md:space-y-5 relative">
+            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-2 md:space-y-5 relative">
               {/* Soft left-side scrim behind text */}
               <div className="absolute -inset-6 md:-inset-10 pointer-events-none rounded-2xl" style={{ background: 'radial-gradient(ellipse 90% 80% at 30% 50%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 70%, transparent 100%)' }} />
-              <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left space-y-3 md:space-y-5">
+              <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left space-y-2 md:space-y-5">
                 <span className="text-[9px] md:text-[11px] tracking-[0.4em] font-medium text-gold-400 uppercase">
                   CHAPTER V &#x2022; THE PROMISE
                 </span>
                 <h2
-                  className="font-serif text-2xl md:text-5xl tracking-[0.12em] font-semibold uppercase leading-snug"
+                  className="font-serif text-[1.65rem] md:text-5xl tracking-[0.08em] font-semibold uppercase leading-tight"
                   style={{ color: 'var(--scene-text)', textShadow: '0 2px 24px rgba(0,0,0,0.7), 0 0 48px rgba(0,0,0,0.4)' }}
                 >
                   YOUR LEGACY,<br />PRESERVED FOREVER
@@ -802,14 +803,15 @@ export default function Home() {
                   className="max-w-md text-sm md:text-[15px] tracking-wide leading-[1.85]"
                   style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 10px rgba(0,0,0,0.95), 0 2px 20px rgba(0,0,0,0.7)' }}
                 >
-                  This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.
+                  <span className="hidden md:inline">This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.</span>
+                  <span className="md:hidden text-[13.5px] leading-relaxed">Long after the laughter fades and the moment becomes a memory, the photograph remains&#x2014;a tangible bridge outliving words, thoughts, and time.</span>
                 </p>
               </div>
             </div>
 
             {/* Right Column: High-Fidelity Legacy Photograph Frame */}
-            <div className="w-full md:w-1/2 flex justify-center md:justify-end mt-4 md:mt-0">
-              <div className="relative border p-2 md:p-2.5 rounded shadow-[0_10px_35px_rgba(0,0,0,0.95)] max-w-[260px] sm:max-w-sm w-full group overflow-hidden transition-all duration-500 hover:border-gold-500/50" style={{ borderColor: 'var(--panel-border)', background: 'var(--panel-bg)' }}>
+            <div className="w-full md:w-1/2 flex justify-center md:justify-end mt-2 md:mt-0">
+              <div className="relative border p-1.5 md:p-2.5 rounded shadow-[0_10px_35px_rgba(0,0,0,0.95)] max-w-[280px] sm:max-w-xs md:max-w-sm w-full group overflow-hidden transition-all duration-500 hover:border-gold-500/50" style={{ borderColor: 'var(--panel-border)', background: 'var(--panel-bg)' }}>
                 {/* Crop Bracket Marks */}
                 <div className="absolute top-4 left-4 w-3.5 h-3.5 border-t-2 border-l-2 border-gold-500/70" />
                 <div className="absolute top-4 right-4 w-3.5 h-3.5 border-t-2 border-r-2 border-gold-500/70" />

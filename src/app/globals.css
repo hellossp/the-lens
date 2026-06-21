@@ -1101,3 +1101,50 @@ html.lenis body {
   border-color: rgba(251,191,36,0.4);
   color: #fbbf24;
 }
+/* -----------------------------------------------
+   SKELETON SHIMMER — Photo slot loading state
+   ----------------------------------------------- */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(251,191,36,0.08) 50%,
+    rgba(255,255,255,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
+/* -----------------------------------------------
+   MOBILE SCROLL PERFORMANCE
+   ----------------------------------------------- */
+@media (pointer: coarse) {
+  /* Native smooth scroll on touch devices */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* GPU-accelerate the 3D canvas and sticky scene wrapper */
+  canvas {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Reduce scene transition animation cost on mobile */
+  .text-scene-1,
+  .text-scene-2,
+  .text-scene-3,
+  .text-scene-services,
+  .text-scene-maker,
+  .text-scene-5,
+  .text-scene-6,
+  .text-scene-7 {
+    will-change: opacity, transform;
+  }
+}
