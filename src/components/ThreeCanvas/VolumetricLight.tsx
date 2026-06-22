@@ -50,24 +50,34 @@ interface VolumetricLightProps {
   particlesRef: React.RefObject<THREE.Points | null>;
 }
 
+// A simple deterministic pseudo-random generator to satisfy React render-purity rules
+function createRandom(seed: number) {
+  let s = seed;
+  return function() {
+    s = (s * 1664525 + 1013904223) % 4294967296;
+    return s / 4294967296;
+  };
+}
+
 export default function VolumetricLight({ lightBeamRef, particlesRef }: VolumetricLightProps) {
   const beamMaterialRef = useRef<THREE.ShaderMaterial>(null);
 
   // Generate random positions and drift factors for dust particles
   const particleCount = 400;
   const [positions, driftFactors] = useMemo(() => {
+    const random = createRandom(12345);
     const pos = new Float32Array(particleCount * 3);
     const drift = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
       // Random coordinates inside a bounding box around the camera viewport
-      pos[i] = (Math.random() - 0.5) * 12; // X
-      pos[i + 1] = (Math.random() - 0.5) * 12; // Y
-      pos[i + 2] = (Math.random() - 0.5) * 15; // Z: distributed along camera tunnel
+      pos[i] = (random() - 0.5) * 12; // X
+      pos[i + 1] = (random() - 0.5) * 12; // Y
+      pos[i + 2] = (random() - 0.5) * 15; // Z: distributed along camera tunnel
 
       // Drift speed/frequency factors
-      drift[i] = Math.random();
-      drift[i + 1] = Math.random();
-      drift[i + 2] = Math.random();
+      drift[i] = random();
+      drift[i + 1] = random();
+      drift[i + 2] = random();
     }
     return [pos, drift];
   }, []);

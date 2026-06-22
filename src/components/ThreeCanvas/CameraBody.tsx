@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useMemo } from "react";
 import * as THREE from "three";
 import { RoundedBox } from "@react-three/drei";
 
@@ -8,10 +8,20 @@ interface CameraBodyProps {
   bodyRef: React.RefObject<THREE.Group | null>;
 }
 
+// A simple deterministic pseudo-random generator to satisfy React render-purity rules
+function createRandom(seed: number) {
+  let s = seed;
+  return function() {
+    s = (s * 1664525 + 1013904223) % 4294967296;
+    return s / 4294967296;
+  };
+}
+
 export default function CameraBody({ bodyRef }: CameraBodyProps) {
   // Procedural pebbled leatherette texture for the body chassis
   const leatherTexture = useMemo(() => {
     if (typeof window === "undefined") return null;
+    const random = createRandom(42);
     const canvas = document.createElement("canvas");
     canvas.width = 512;
     canvas.height = 512;
@@ -23,11 +33,11 @@ export default function CameraBody({ bodyRef }: CameraBodyProps) {
 
       // Fine pebbles/grain noise
       for (let i = 0; i < 15000; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const radius = 0.5 + Math.random() * 1.5;
+        const x = random() * canvas.width;
+        const y = random() * canvas.height;
+        const radius = 0.5 + random() * 1.5;
         // Vary grayscale values to create depth in bumpmap
-        const gray = Math.floor(128 + (Math.random() - 0.5) * 60);
+        const gray = Math.floor(128 + (random() - 0.5) * 60);
         ctx.fillStyle = `rgb(${gray},${gray},${gray})`;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);

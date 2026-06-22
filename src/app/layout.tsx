@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "THE LENS | A Cinematic Storytelling Experience",
-  description: "An immersive, scroll-driven 3D journey through light, focus, memory, and legacy, inspired by Oryzo.",
+  title: "THE LENS STUDIO | Cinematic Photography & Art",
+  description: "An immersive showcase of high-fidelity cinematic photography, capturing weddings, editorial portraits, brand keynotes, and commercial imagery.",
 };
 
 export default function RootLayout({

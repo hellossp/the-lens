@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import * as THREE from "three";
 import { MeshTransmissionMaterial } from "@react-three/drei";
 

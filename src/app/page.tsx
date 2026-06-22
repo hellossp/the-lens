@@ -108,7 +108,7 @@ const playShutterSound = () => {
   if (now - lastClickTime < 120) return;
   lastClickTime = now;
   try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const ctx = new (window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
 
     // Crisp mechanical dial click sound
     const bufferSize = ctx.sampleRate * 0.05;
@@ -135,7 +135,7 @@ const playShutterSound = () => {
     gainNode.connect(ctx.destination);
 
     noiseSource.start();
-  } catch (err) {
+  } catch {
     // silence errors
   }
 };
@@ -203,9 +203,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setMounted(true);
+    const frame = requestAnimationFrame(() => setMounted(true));
     const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(timer);
+    };
   }, []);
 
   // Active service state for Capabilities Section Mode Dial

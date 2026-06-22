@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { X, Send, Camera, Sparkles, ChevronDown, CheckCircle } from "lucide-react";
 
-const WEB3FORMS_KEY = "abadc18b-7389-42d8-88e5-b0e01f2ac477";
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "abadc18b-7389-42d8-88e5-b0e01f2ac477";
 
 const COUNTRIES = [
   "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia",
@@ -155,7 +155,7 @@ export default function GrabModal() {
         <span className="grab-cta-icon">
           <Sparkles className="w-3.5 h-3.5" />
         </span>
-        <span className="grab-cta-label">Grab one for yourself</span>
+        <span className="grab-cta-label">Customize for your business</span>
         <span className="grab-cta-arrow">→</span>
       </button>
 
@@ -183,7 +183,7 @@ export default function GrabModal() {
                 <Camera className="w-3 h-3" />
                 <span>THE LENS STUDIO</span>
               </div>
-              <h2 className="grab-modal-title">Grab One For Yourself</h2>
+              <h2 className="grab-modal-title">Customize For Your Business</h2>
               <p className="grab-modal-subtitle">
                 Tell us about your vision. We&apos;ll shape the light around it.
               </p>
