@@ -111,11 +111,6 @@ export default function Overlay() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-40 select-none font-sans">
-      {/* Viewfinder Crop Marks - Four Corners */}
-      <div className="absolute top-4 left-4 md:top-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-t border-l border-white/20" />
-      <div className="absolute top-4 right-4 md:top-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-t border-r border-white/20" />
-      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-6 h-6 md:w-8 md:h-8 border-b border-l border-white/20" />
-      <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-6 h-6 md:w-8 md:h-8 border-b border-r border-white/20" />
 
       {/* Viewfinder Grid Dots */}
       <div className="absolute top-1/2 left-4 md:left-8 -translate-y-1/2 w-1.5 h-0.5 bg-white/10" />
