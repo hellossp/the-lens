@@ -341,7 +341,7 @@ export default function Home() {
               <div className="scene-chapter-tag">A Portal to Freeze Time</div>
               <h1 className="scene-heading">THE LENS</h1>
               <p className="scene-body">
-                Photography is the art of freezing a heartbeat — holding a fraction of a second before it slips into the forever past.
+                Photography is the art of freezing a heartbeat, holding a fraction of a second before it slips into the forever past.
               </p>
             </div>
           </div>
@@ -359,7 +359,7 @@ export default function Home() {
               <div className="scene-chapter-tag">Chapter I · The Source</div>
               <h2 className="scene-heading">LIGHT REVEALS<br />THE SOUL</h2>
               <p className="scene-body">
-                Every memory begins as raw light. We shape, refract, and capture it through precision glass — turning fleeting rays into permanent feelings.
+                Every memory begins as raw light. We shape, refract, and capture it through precision glass, turning fleeting rays into permanent feelings.
               </p>
             </div>
           </div>
@@ -677,7 +677,7 @@ export default function Home() {
                 className="max-w-lg text-sm md:text-[15px] tracking-wide leading-[1.85] mt-6"
                 style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 12px rgba(0,0,0,0.95), 0 2px 24px rgba(0,0,0,0.7)' }}
               >
-                I built it because I know how it feels &#x2014; the second before you press the shutter. That half-breath. That instinct. That terror that the moment might slip past you. The Lens exists because some things are worth freezing forever.
+                I built it because I know how it feels, the second before you press the shutter. That half-breath. That instinct. That terror that the moment might slip past you. The Lens exists because some things are worth freezing forever.
               </p>
             </div>
           </div>
@@ -807,7 +807,7 @@ export default function Home() {
                   style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 10px rgba(0,0,0,0.95), 0 2px 20px rgba(0,0,0,0.7)' }}
                 >
                   <span className="hidden md:inline">This is why we do what we do. Long after the occasion ends, the laughter fades, and the moment becomes a memory, the photograph remains. It is a tangible bridge between generations, outliving words, thoughts, and time.</span>
-                  <span className="md:hidden text-[13.5px] leading-relaxed">Long after the laughter fades and the moment becomes a memory, the photograph remains&#x2014;a tangible bridge outliving words, thoughts, and time.</span>
+                  <span className="md:hidden text-[13.5px] leading-relaxed">Long after the laughter fades and the moment becomes a memory, the photograph remains, a tangible bridge outliving words, thoughts, and time.</span>
                 </p>
               </div>
             </div>
