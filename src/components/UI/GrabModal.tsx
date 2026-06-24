@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { X, Send, Camera, Sparkles, ChevronDown, CheckCircle } from "lucide-react";
+import { X, Send, Camera, Sparkles, ChevronDown, CheckCircle, Check } from "lucide-react";
 
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "abadc18b-7389-42d8-88e5-b0e01f2ac477";
 
@@ -155,7 +155,7 @@ export default function GrabModal() {
         <span className="grab-cta-icon">
           <Sparkles className="w-3.5 h-3.5" />
         </span>
-        <span className="grab-cta-label">Customize for your business</span>
+        <span className="grab-cta-label">GET YOUR WEBSITE</span>
         <span className="grab-cta-arrow">→</span>
       </button>
 
@@ -183,7 +183,7 @@ export default function GrabModal() {
                 <Camera className="w-3 h-3" />
                 <span>THE LENS STUDIO</span>
               </div>
-              <h2 className="grab-modal-title">Customize For Your Business</h2>
+              <h2 className="grab-modal-title">LET&apos;S BUILD YOUR WEBSITE</h2>
               <p className="grab-modal-subtitle">
                 Tell us about your vision. We&apos;ll shape the light around it.
               </p>
@@ -308,6 +308,27 @@ export default function GrabModal() {
                     <span className="grab-pricing-label">Packages Starting From</span>
                     <span className="grab-pricing-amount">$250</span>
                   </div>
+
+                  {/* Added Features Grid */}
+                  <div className="grab-pricing-features">
+                    <div className="grab-feature-item">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Custom design</span>
+                    </div>
+                    <div className="grab-feature-item">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Mobile responsive</span>
+                    </div>
+                    <div className="grab-feature-item">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Portfolio showcase</span>
+                    </div>
+                    <div className="grab-feature-item">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Lead generation focused</span>
+                    </div>
+                  </div>
+
                   <p className="grab-pricing-note">
                     Final quote depends on the required features, integrations, and project scope.
                   </p>
@@ -335,10 +356,14 @@ export default function GrabModal() {
                   ) : (
                     <>
                       <Send className="w-3.5 h-3.5" />
-                      <span>Send Enquiry</span>
+                      <span>START MY PROJECT →</span>
                     </>
                   )}
                 </button>
+
+                <p className="grab-response-time-info">
+                  ⚡ We usually respond in less than 24 hours
+                </p>
 
                 {/* Closing Statement */}
                 <p className="grab-closing-statement">

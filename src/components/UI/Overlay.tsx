@@ -146,6 +146,14 @@ export default function Overlay() {
         <div className="flex items-center space-x-3 md:space-x-4">
           <div className="flex items-center space-x-4 md:space-x-6 text-[9px] md:text-[10px] tracking-[0.2em] font-medium text-white/50">
             <span className="hidden md:inline">50MM F1.2 LENSE JOURNEY</span>
+            <a
+              href="https://www.sitansu.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-400/80 hover:text-gold-400 font-bold transition-all border border-gold-500/20 hover:border-gold-500 bg-gold-500/5 px-2 py-0.5 rounded pointer-events-auto"
+            >
+              BY SITANSU
+            </a>
             <span className="text-white/80">REC [●]</span>
           </div>
         </div>

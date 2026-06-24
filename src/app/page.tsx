@@ -923,8 +923,16 @@ export default function Home() {
               )}
             </div>
 
-            <div className="mt-8 text-[9px] tracking-[0.3em] text-white/20 font-mono text-center">
-              © {new Date().getFullYear()} THE LENS STUDIO. ALL RIGHTS RESERVED.
+            <div className="mt-8 text-[9px] tracking-[0.3em] text-white/20 font-mono text-center flex flex-col items-center justify-center gap-1.5 pointer-events-auto">
+              <span>© {new Date().getFullYear()} THE LENS STUDIO. ALL RIGHTS RESERVED.</span>
+              <a
+                href="https://www.sitansu.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gold-400/50 hover:text-gold-400 transition-colors pointer-events-auto"
+              >
+                DESIGNED & DEVELOPED BY SITANSU
+              </a>
             </div>
           </div>
 
