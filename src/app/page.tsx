@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import LenisProvider from "@/components/UI/LenisProvider";
 import CustomCursor from "@/components/UI/CustomCursor";
 import Overlay from "@/components/UI/Overlay";
 import { Camera, Calendar, ArrowRight, User, Mail, MessageSquare, Lock, Eye, X } from "lucide-react";
 import GrabModal from "@/components/UI/GrabModal";
+import { trackEvent } from "@/utils/analytics";
 
 // Dynamically import the Canvas Container to bypass SSR issues
 const CanvasContainer = dynamic(
@@ -153,6 +154,9 @@ export default function Home() {
   // Scroll stage tracking state
   const [activeStage, setActiveStage] = useState("lens");
 
+  const scroll50Triggered = useRef(false);
+  const scroll90Triggered = useRef(false);
+
   useEffect(() => {
     const handleScroll = () => {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -177,11 +181,32 @@ export default function Home() {
       } else {
         setActiveStage("booking");
       }
+
+      // Track scroll depth
+      if (progress >= 0.50 && !scroll50Triggered.current) {
+        scroll50Triggered.current = true;
+        trackEvent("Scroll50", { depth: "50%" });
+      }
+      if (progress >= 0.90 && !scroll90Triggered.current) {
+        scroll90Triggered.current = true;
+        trackEvent("Scroll90", { depth: "90%" });
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Time on page tracking
+  useEffect(() => {
+    const times = [10, 30, 60, 120];
+    const timers = times.map((seconds) =>
+      setTimeout(() => {
+        trackEvent("TimeOnPage", { seconds });
+      }, seconds * 1000)
+    );
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   // Capabilities Mode Dial states
@@ -196,6 +221,11 @@ export default function Home() {
   const handleCustomVisionSubmit = () => {
     if (!customVision.trim()) return;
     setCustomSubmitted(true);
+    // Track custom vision form submission as a lead
+    trackEvent("Lead", {
+      content_name: "Custom Vision Idea",
+      vision_details: customVision
+    });
     setTimeout(() => {
       setCustomSubmitted(false);
       setCustomVision("");
@@ -273,8 +303,17 @@ export default function Home() {
     return () => window.removeEventListener("camera-shutter", handleShutter);
   }, []);
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const sessionType = formData.get("sessionType") as string;
+
+    // Track booking form submit
+    trackEvent("Lead", {
+      content_name: "Secure Cinematic Session Form",
+      session_type: sessionType || "Not specified"
+    });
+
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   };
@@ -867,6 +906,7 @@ export default function Home() {
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <input
                         type="text"
+                        name="fullName"
                         required
                         placeholder="Full Name"
                         className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-xs tracking-wider text-white placeholder-white/30 focus:outline-none focus:border-gold-500 transition-colors"
@@ -878,6 +918,7 @@ export default function Home() {
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <input
                         type="email"
+                        name="email"
                         required
                         placeholder="Email Address"
                         className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-xs tracking-wider text-white placeholder-white/30 focus:outline-none focus:border-gold-500 transition-colors"
@@ -888,6 +929,7 @@ export default function Home() {
                     <div className="relative">
                       <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <select
+                        name="sessionType"
                         required
                         defaultValue=""
                         className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-xs tracking-wider text-white placeholder-white/30 focus:outline-none focus:border-gold-500 transition-colors appearance-none cursor-pointer"

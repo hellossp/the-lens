@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { X, Send, Camera, Sparkles, ChevronDown, CheckCircle, Check } from "lucide-react";
+import { trackEvent } from "@/utils/analytics";
 
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "abadc18b-7389-42d8-88e5-b0e01f2ac477";
 
@@ -104,6 +105,12 @@ export default function GrabModal() {
 
       if (data.success) {
         setSubmitted(true);
+        // Track form submit
+        trackEvent("Lead", {
+          content_name: "Web3Forms Website Enquiry",
+          country: form.country,
+          studio: form.studio || "Not provided",
+        });
       } else {
         setError(data.message || "Something went wrong. Please try again.");
       }
@@ -148,7 +155,10 @@ export default function GrabModal() {
       {/* ─── Sticky Floating CTA Button ─── */}
       <button
         id="grab-cta-btn"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          trackEvent("Schedule", { content_name: "Enquiry Modal Opened" });
+        }}
         aria-label="Open enquiry form"
         className={`grab-cta-btn ${pulsing ? "grab-cta-pulse" : ""}`}
       >

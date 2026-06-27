@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Camera } from "lucide-react";
 import gsap from "gsap";
+import { trackEvent } from "@/utils/analytics";
 
 const STAGES = [
   { id: "lens", label: "THE LENS" },
@@ -207,6 +208,10 @@ export default function Overlay() {
                 else if (stage.id === "gallery") targetProgress = 0.73;
                 else if (stage.id === "legacy") targetProgress = 0.85;
                 else if (stage.id === "booking") targetProgress = 0.96;
+
+                if (stage.id === "booking") {
+                  trackEvent("Schedule", { content_name: "Booking Dot Navigated" });
+                }
 
                 window.scrollTo({
                   top: targetProgress * docHeight,
