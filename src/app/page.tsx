@@ -277,7 +277,7 @@ export default function Home() {
 
 
 
-  const triggerShutter = () => {
+  const triggerShutter = (source: "button" | "3d_camera" = "button") => {
     // 1. Trigger camera flash overlay
     setFlash(true);
     setTimeout(() => setFlash(false), 250);
@@ -285,7 +285,10 @@ export default function Home() {
     // 2. Play Audio Shutter click
     playShutterSound();
 
-    // 3. Unlock the next photo in sequence
+    // 3. Track Shutter Release Event
+    trackEvent("ReleaseShutter", { source });
+
+    // 4. Unlock the next photo in sequence
     setUnlockedPhotos((prev) => {
       if (prev.length >= PHOTO_POOL.length) return prev; // All already unlocked
       const nextPhoto = PHOTO_POOL[prev.length];
@@ -296,7 +299,7 @@ export default function Home() {
   // Listen to camera shutter click events dispatched from the 3D Canvas
   useEffect(() => {
     const handleShutter = () => {
-      triggerShutter();
+      triggerShutter("3d_camera");
     };
 
     window.addEventListener("camera-shutter", handleShutter);
@@ -739,7 +742,7 @@ export default function Home() {
               <div className="flex flex-col items-center space-y-2 md:space-y-3 pt-1 md:pt-2">
                 <div className={`flex flex-row items-center justify-center gap-2.5 md:gap-4 z-30 relative w-full max-w-md sm:max-w-none ${activeStage === "gallery" ? "pointer-events-auto" : "pointer-events-none"}`}>
                   <button
-                    onClick={triggerShutter}
+                    onClick={() => triggerShutter("button")}
                     className="w-1/2 sm:w-auto relative overflow-visible z-50 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black px-3.5 md:px-8 py-2.5 md:py-3 rounded-full text-[8.5px] md:text-[10px] font-mono font-bold tracking-[0.15em] md:tracking-[0.25em] flex items-center justify-center space-x-1 md:space-x-2 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.35)] cursor-pointer after:absolute after:inset-[-20px] after:content-['']"
                   >
                     <Camera className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
