@@ -92,7 +92,7 @@ export default function GrabModal() {
         "business_or_studio_name": form.studio || "Not provided",
         "website_url": form.website || "Not provided",
         "instagram_profile": form.instagram,
-        "package": "Starting at $250",
+        "package": "Special Offer ₹7,999 (Valid till 20th Oct, Reg. ₹14,999)",
       };
 
       const res = await fetch("https://api.web3forms.com/submit", {
@@ -315,8 +315,19 @@ export default function GrabModal() {
                 {/* Pricing Card */}
                 <div className="grab-pricing-card">
                   <div className="grab-pricing-top">
-                    <span className="grab-pricing-label">Packages Starting From</span>
-                    <span className="grab-pricing-amount">$250</span>
+                    <div className="flex items-center justify-between">
+                      <span className="grab-pricing-label">SPECIAL LIMITED OFFER</span>
+                      <span className="text-[10px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full tracking-wide">
+                        Valid till 20th Oct
+                      </span>
+                    </div>
+                    <div className="flex items-baseline space-x-2.5 mt-1">
+                      <span className="grab-pricing-amount">₹7,999</span>
+                      <span className="text-white/40 line-through text-sm font-mono">₹14,999</span>
+                      <span className="text-[10px] text-emerald-400 font-semibold tracking-wide bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">
+                        SAVE ₹7,000
+                      </span>
+                    </div>
                   </div>
 
                   {/* Added Features Grid */}
@@ -340,7 +351,7 @@ export default function GrabModal() {
                   </div>
 
                   <p className="grab-pricing-note">
-                    Final quote depends on the required features, integrations, and project scope.
+                    Offer price ₹7,999 is valid till 20th October (Regular price: ₹14,999). Final quote depends on required features and project scope.
                   </p>
                 </div>
 
