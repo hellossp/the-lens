@@ -92,7 +92,7 @@ export default function GrabModal() {
         "business_or_studio_name": form.studio || "Not provided",
         "website_url": form.website || "Not provided",
         "instagram_profile": form.instagram,
-        "package": "Special Offer ₹7,999 (Valid till 20th Oct, Reg. ₹14,999)",
+        "package": "Special Offer ₹14,999 (Valid till 20th Oct, MRP ₹22,999)",
       };
 
       const res = await fetch("https://api.web3forms.com/submit", {
@@ -322,10 +322,10 @@ export default function GrabModal() {
                       </span>
                     </div>
                     <div className="flex items-baseline space-x-2.5 mt-1">
-                      <span className="grab-pricing-amount">₹7,999</span>
-                      <span className="text-white/40 line-through text-sm font-mono">₹14,999</span>
+                      <span className="grab-pricing-amount">₹14,999</span>
+                      <span className="text-white/40 line-through text-sm font-mono">₹22,999</span>
                       <span className="text-[10px] text-emerald-400 font-semibold tracking-wide bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">
-                        SAVE ₹7,000
+                        SAVE ₹8,000
                       </span>
                     </div>
                   </div>
@@ -351,7 +351,7 @@ export default function GrabModal() {
                   </div>
 
                   <p className="grab-pricing-note">
-                    Offer price ₹7,999 is valid till 20th October (Regular price: ₹14,999). Final quote depends on required features and project scope.
+                    Offer price ₹14,999 is valid till 20th October (MRP: ₹22,999). Final quote depends on required features and project scope.
                   </p>
                 </div>
 
