@@ -121,19 +121,17 @@ export default function Overlay() {
 
       {/* Viewfinder Center Autofocus Brackets — hidden on mobile to avoid overlapping centered content */}
       <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-between w-24 h-24 pointer-events-none">
-        <div className={`w-3 h-8 border-t border-b border-l transition-all duration-500 ${
-          activeStage === "focus"
+        <div className={`w-3 h-8 border-t border-b border-l transition-all duration-500 ${activeStage === "focus"
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
             : "border-white/15 scale-100"
-        }`} />
+          }`} />
         <div className="hud-locked-text text-[9px] text-emerald-500/80 font-mono tracking-widest absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 select-none pointer-events-none">
           LOCKED
         </div>
-        <div className={`w-3 h-8 border-t border-b border-r transition-all duration-500 ${
-          activeStage === "focus"
+        <div className={`w-3 h-8 border-t border-b border-r transition-all duration-500 ${activeStage === "focus"
             ? "border-emerald-500/80 scale-95 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
             : "border-white/15 scale-100"
-        }`} />
+          }`} />
       </div>
 
       {/* Top Header Bar */}
@@ -146,7 +144,7 @@ export default function Overlay() {
         </div>
         <div className="flex items-center space-x-3 md:space-x-4">
           <div className="flex items-center space-x-4 md:space-x-6 text-[9px] md:text-[10px] tracking-[0.2em] font-medium text-white/50">
-            <span className="hidden md:inline">50MM F1.2 LENSE JOURNEY</span>
+            <span className="hidden md:inline">50MM F1.2 CINEMATIC PORTFOLIO</span>
             <a
               href="https://www.sitansu.dev/"
               target="_blank"
@@ -220,21 +218,19 @@ export default function Overlay() {
               }}
             >
               <span
-                className={`hidden md:inline-block text-[10px] tracking-[0.25em] font-medium transition-all duration-300 text-right ${
-                  isActive
+                className={`hidden md:inline-block text-[10px] tracking-[0.25em] font-medium transition-all duration-300 text-right ${isActive
                     ? "text-gold-400 font-bold opacity-100 translate-x-0"
                     : "text-white/30 group-hover:opacity-60 opacity-0 translate-x-2"
-                }`}
+                  }`}
               >
                 {stage.label}
               </span>
               <div className="relative flex items-center justify-center w-3 h-3">
                 <div
-                  className={`absolute rounded-full transition-all duration-500 ${
-                    isActive
+                  className={`absolute rounded-full transition-all duration-500 ${isActive
                       ? "w-2 md:w-2.5 h-2 md:h-2.5 bg-gold-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
                       : "w-1 h-1 bg-white/20 group-hover:bg-white/50"
-                  }`}
+                    }`}
                 />
               </div>
             </div>
